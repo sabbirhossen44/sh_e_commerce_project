@@ -415,7 +415,7 @@
                                 <div class="dropdown-body">
                                     <a href="javascript:;" class="dropdown-item">
                                         <div class="figure">
-                                            <img src="https://via.placeholder.com/30x30" alt="userr">
+                                            <img src="{{ Avatar::create('Leonardo Payne')->toBase64()}}" />
                                         </div>
                                         <div class="content">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -427,7 +427,7 @@
                                     </a>
                                     <a href="javascript:;" class="dropdown-item">
                                         <div class="figure">
-                                            <img src="https://via.placeholder.com/30x30" alt="userr">
+                                            <img src="{{ Avatar::create('Carl Henson')->toBase64()}}" />
 
                                         </div>
                                         <div class="content">
@@ -440,7 +440,7 @@
                                     </a>
                                     <a href="javascript:;" class="dropdown-item">
                                         <div class="figure">
-                                            <img src="https://via.placeholder.com/30x30" alt="userr">
+                                            <img src="{{ Avatar::create('Jensen Combs')->toBase64()}}" />
                                         </div>
                                         <div class="content">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -452,7 +452,7 @@
                                     </a>
                                     <a href="javascript:;" class="dropdown-item">
                                         <div class="figure">
-                                            <img src="https://via.placeholder.com/30x30" alt="userr">
+                                            <img src="{{ Avatar::create('Amiah Burton')->toBase64()}}" />
                                         </div>
                                         <div class="content">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -464,7 +464,7 @@
                                     </a>
                                     <a href="javascript:;" class="dropdown-item">
                                         <div class="figure">
-                                            <img src="https://via.placeholder.com/30x30" alt="userr">
+                                            <img src="{{ Avatar::create('Yaretzi Mayo')->toBase64()}}" />
                                         </div>
                                         <div class="content">
                                             <div class="d-flex justify-content-between align-items-center">
