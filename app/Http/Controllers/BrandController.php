@@ -34,4 +34,12 @@ class BrandController extends Controller
         ]);
         return back()->with('brand_add', 'Brand Add Successfully!');
     }
+    public function brand_delete($id){
+        $file_path = public_path('uploads/brand/' .Brand::find($id)->brand_logo);
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+        Brand::find($id)->delete();
+        return back()->with('brand_delete', 'Brand Delete Successfully!');
+    }
 }

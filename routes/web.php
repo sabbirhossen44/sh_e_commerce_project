@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
@@ -61,13 +62,26 @@ Route::get('/product', [ProductController::class, 'product_add'])->name('product
 Route::post('/getsubcategory', [ProductController::class, 'getsubcategory']);
 Route::post('/product/store', [ProductController::class, 'product_stroe'])->name('product.stroe');
 Route::get('/product/list', [ProductController::class, 'product_list'])->name('product.list');
+Route::get('/product/edit/{id}', [ProductController::class, 'product_edit'])->name('product.edit');
+Route::post('/product/update/{id}', [ProductController::class, 'product_update'])->name('product.update');
+Route::get('/product/delete/{id}', [ProductController::class, 'product_delete'])->name('product.delete');
 Route::post('/getstatus', [ProductController::class, 'getstatus']);
+Route::delete('/ajax-gallery-image-delete/{id}', [ProductController::class, 'ajaxDeleteGalleryImage'])->name('gallery.image.ajax.delete');
 
 // Brand
 Route::get('/brand', [BrandController::class, 'brand'])->name('brand');
 Route::post('/brand/store', [BrandController::class, 'brand_store'])->name('brand.store');
+Route::get('/brand/delete/{id}', [BrandController::class, 'brand_delete'])->name('brand.delete');
 
 // variation
 Route::get('/variation', [VariationController::class, 'variation'])->name('variation');
 Route::post('/variation/store', [VariationController::class, 'color_store'])->name('color.store');
 Route::post('/size/store', [VariationController::class, 'size_store'])->name('size.store');
+Route::get('/size/delete/{id}', [VariationController::class, 'variation_delete'])->name('variation.delete');
+Route::get('/color/delete/{id}', [VariationController::class, 'color_delete'])->name('color.delete');
+
+
+// inventory
+Route::get('/inventory/{id}', [InventoryController::class, 'add_inventory'])->name('add.inventory');
+Route::post('/inventory/store/{id}', [InventoryController::class, 'inventory_store'])->name('inventory.store');
+Route::get('/inventory/delete/{id}', [InventoryController::class, 'inventory_delete'])->name('inventory.delete');

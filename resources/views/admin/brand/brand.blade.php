@@ -7,6 +7,9 @@
                     <h3>Brand List</h3>
                 </div>
                 <div class="card-body">
+                    @if (session('brand_delete'))
+                        <div class="alert alert-success">{{session('brand_delete')}}</div>
+                    @endif
                     <table class="table table-bordered">
                         <tr>
                             <th>Brand Name</th>
@@ -17,11 +20,11 @@
                             <tr>
                                 <td>{{$brand->brand_name}}</td>
                                 <td>
-                                    <img src="{{asset('uploads/brand/'.$brand->brand_logo)}}" width="150" class="img-fluid object-contain" alt="">
+                                    <img src="{{asset('uploads/brand/' . $brand->brand_logo)}}" width="150"
+                                        class="img-fluid object-contain" alt="">
                                 </td>
                                 <td>
-                                    <a href=""
-                                        class="btn btn-danger btn-icon">
+                                    <a href="" class="btn btn-danger del_btn" data-link="{{route('brand.delete', $brand->id)}}">
                                         <i data-feather="trash"></i>
                                     </a>
                                 </td>
@@ -64,4 +67,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer_script')
+    <script>
+        $('.del_btn').click(function (e) {
+            e.preventDefault();
+            var link = $(this).attr('data-link');
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = link;
+                }
+            });
+
+        })
+    </script>
 @endsection

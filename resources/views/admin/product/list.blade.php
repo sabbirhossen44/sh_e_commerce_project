@@ -9,6 +9,9 @@
                         Product</a>
                 </div>
                 <div class="card-body">
+                    @if (session('product_delete'))
+                        <div class="alert alert-success mt-2">{{session('product_delete')}}</div>   
+                    @endif
                     <table class="table table-bordered">
                         <tr>
                             <th>SL</th>
@@ -33,13 +36,18 @@
                                 </td>
                                 <td>
                                     <input type="checkbox" {{$product->status == 1 ? 'checked' : ''}} name="" id=""
-                                        data-id="{{$product->id}}" class="status" data-toggle="toggle" value="{{$product -> status}}">
+                                        data-id="{{$product->id}}" class="status" data-toggle="toggle"
+                                        value="{{$product->status}}">
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-primary btn-icon">
-                                        <i data-feather="edit"></i>
+                                    <a href="{{route('add.inventory', $product->id)}}" class="btn btn-info btn-icon">
+                                        <i data-feather="layers"></i>
                                     </a>
-                                    <a href="" class="btn btn-danger btn-icon">
+                                    <a href="{{route('product.edit', $product->id)}}" class="btn btn-primary btn-icon">
+                                        <i data-feather="eye"></i>
+                                    </a>
+                                    <a href="" class="btn btn-danger btn-icon del_btn"
+                                        data-link="{{route('product.delete', $product->id)}}">
                                         <i data-feather="trash"></i>
                                     </a>
                                 </td>
@@ -55,7 +63,7 @@
 @section('footer_script')
     <script>
         $('.status').change(function () {
-            
+
             if ($(this).val() != 1) {
                 $(this).attr('value', 1)
             }
@@ -78,6 +86,27 @@
 
                 }
             })
+
+        })
+    </script>
+    <script>
+        $('.del_btn').click(function (e) {
+            e.preventDefault();
+            var link = $(this).attr('data-link');
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = link;
+                }
+            });
 
         })
     </script>

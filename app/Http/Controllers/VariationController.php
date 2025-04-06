@@ -43,5 +43,13 @@ class VariationController extends Controller
         ]);
         return back()->with('size_insert', 'Size Add Successfully!');
     }
+    public function variation_delete($id){
+        size::findOrFail($id)->delete();
+        return back()->with('size_delete', 'Size Delete Successfully!');
+    }
+    public function color_delete($id){
+        Color::findOrFail($id)->delete();
+        return back()->with('color_delete', 'Color Delete Successfully!');
+    }
     
 }

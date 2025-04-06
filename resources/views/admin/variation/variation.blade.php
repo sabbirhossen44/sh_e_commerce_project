@@ -2,11 +2,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card bg-light">
                 <div class="card-header">
                     <h3>Color List</h3>
                 </div>
                 <div class="card-body">
+                    @if (session('color_delete'))
+                        <div class="alert alert-success">{{session('color_delete')}}</div>
+                    @endif
                     <table class="table table-bordered">
                         <tr>
                             <th>Color Name</th>
@@ -17,12 +20,57 @@
                             <tr>
                                 <td>{{$color->color_name}}</td>
                                 <td>
-                                    <i style="width: 30px; height: 30px; background-color: red; "></i>
+                                    <i
+                                        style="display: inline-block; width: 50px; height: 30px; background: {{$color->color_name == 'N/A' ? ' ' : $color->color_code}}; color:{{$color->color_name == 'N/A' ? '' : 'transparent'}};">{{$color->color_name == 'N/A' ? $color->color_name : 'Color' }}</i>
                                 </td>
-                                <td>Delete</td>
+                                <td>
+                                    <a href="{{route('color.delete', $color->id)}}" class="btn btn-danger btn-icon">
+                                        <i data-feather="trash"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </table>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3>Sizes List</h3>
+                </div>
+                <div class="card-body">
+                    @if (session('size_delete'))
+                        <div class="alert alert-success">{{session('size_delete')}}</div>
+                    @endif
+                    <div class="row">
+                        @foreach ($categories as $category)
+                            <div class="col-md-6 mt-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>{{$category->category_name}}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Size Name</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            @foreach (App\Models\size::where('category_id', $category->id)->get() as $size)
+                                                <tr>
+                                                    <td>{{$size->size_name}}</td>
+                                                    <td>
+                                                        <a href="{{route('variation.delete', $size->id)}}"
+                                                            class="btn btn-danger btn-icon">
+                                                            <i data-feather="trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
