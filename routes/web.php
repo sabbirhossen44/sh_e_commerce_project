@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FrontendController;
@@ -85,3 +86,10 @@ Route::get('/color/delete/{id}', [VariationController::class, 'color_delete'])->
 Route::get('/inventory/{id}', [InventoryController::class, 'add_inventory'])->name('add.inventory');
 Route::post('/inventory/store/{id}', [InventoryController::class, 'inventory_store'])->name('inventory.store');
 Route::get('/inventory/delete/{id}', [InventoryController::class, 'inventory_delete'])->name('inventory.delete');
+
+// banner
+Route::get('/banner', [BannerController::class, 'banner'])->name('banner');
+Route::post('/banner/store', [BannerController::class, 'banner_store'])->name('banner.store');
+Route::get('/banner/edit/{id}', [BannerController::class, 'banner_edit'])->name('banner.edit');
+Route::Post('/banner/update/{id}', [BannerController::class, 'banner_update'])->name('banner.update');
+Route::get('/banner/delete/{id}', [BannerController::class, 'banner_delete'])->name('banner.delete');
