@@ -6,8 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="wpOceans">
+    @php
+     $faveicon = App\Models\Faveicon::where('status' , 1)->first();
+    @endphp
+    @if ($faveicon)
+    <link rel="shortcut icon" type="image/png" href="{{asset('uploads/faveicon/'.$faveicon->logo)}}">
+    <title>{{$faveicon->title}}</title>
+    @else
     <link rel="shortcut icon" type="image/png" href="{{asset('frontend')}}/images/favicon.png">
     <title>Sabbir-SH Shop</title>
+    @endif
     <link href="{{asset('frontend')}}/css/themify-icons.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/flaticon_ecommerce.css" rel="stylesheet">
@@ -93,8 +101,16 @@
                     <div class="row align-items-center">
                         <div class="col-lg-2">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href="index.html"><img src="{{asset('frontend')}}/images/logo.svg"
-                                        alt="logo"></a>
+                                @php
+                                $logo = App\Models\Logo::where('status', 1)->first();
+                                @endphp
+                                @if ($logo)
+                                <a class="navbar-brand" href="{{route('welcome')}}"><img src="{{asset('uploads/logo/'. $logo->logo)}}"
+                                    alt="logo"></a>
+                                @else
+                                <a class="navbar-brand" href="{{route('welcome')}}"><img src="{{asset('frontend')}}/images/logo.svg"
+                                    alt="logo"></a>
+                                @endif
                             </div>
                         </div>
                         <div class="col-lg-6 col-12">

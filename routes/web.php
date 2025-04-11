@@ -3,9 +3,11 @@
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FaveiconController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LogoController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
@@ -93,3 +95,16 @@ Route::post('/banner/store', [BannerController::class, 'banner_store'])->name('b
 Route::get('/banner/edit/{id}', [BannerController::class, 'banner_edit'])->name('banner.edit');
 Route::Post('/banner/update/{id}', [BannerController::class, 'banner_update'])->name('banner.update');
 Route::get('/banner/delete/{id}', [BannerController::class, 'banner_delete'])->name('banner.delete');
+
+// logo
+Route::get('/logo', [LogoController::class, 'logo'])->name('logo');
+Route::post('/logo/store', [LogoController::class, 'logo_store'])->name('logo.store');
+Route::get('/logo/delete/{id}', [LogoController::class, 'logo_delete'])->name('logo.delete');
+Route::post('/getstatus-logo', [LogoController::class, 'getstatus_logo']);
+
+// faveicon
+Route::post('/faveicon/store', [FaveiconController::class, 'faveicon_store'])->name('faveicon.store');
+Route::post('/getstatus-faveicon', [FaveiconController::class, 'getstatus_faveicon']);
+Route::get('/faveicon/edit/{id}', [FaveiconController::class, 'faveicon_edit'])->name('faveicon.edit');
+Route::post('/faveicon/update/{id}', [FaveiconController::class, 'faveicon_update'])->name('faveicon.update');
+Route::get('/faveicon/delete/{id}', [FaveiconController::class, 'faveicon_delete'])->name('faveicon.delete');
