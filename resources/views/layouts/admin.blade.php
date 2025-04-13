@@ -230,40 +230,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#authPages" role="button" aria-expanded="false"
-                            aria-controls="authPages">
-                            <i class="link-icon" data-feather="unlock"></i>
-                            <span class="link-title">Authentication</span>
-                            <i class="link-arrow" data-feather="chevron-down"></i>
+                        <a class="nav-link"  href="{{route('offer')}}" >
+                            <i class="link-icon" data-feather="trello"></i>
+                            <span class="link-title">Exciting Offers</span>
+                            {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
                         </a>
-                        <div class="collapse" id="authPages">
-                            <ul class="nav sub-menu">
-                                <li class="nav-item">
-                                    <a href="pages/auth/login.html" class="nav-link">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/auth/register.html" class="nav-link">Register</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#errorPages" role="button"
-                            aria-expanded="false" aria-controls="errorPages">
-                            <i class="link-icon" data-feather="cloud-off"></i>
-                            <span class="link-title">Error</span>
-                            <i class="link-arrow" data-feather="chevron-down"></i>
+                        <a class="nav-link" href="{{route('Subscriber.list')}}">
+                            <i class="link-icon" data-feather="list"></i>
+                            <span class="link-title">Subscriber List</span>
                         </a>
-                        <div class="collapse" id="errorPages">
-                            <ul class="nav sub-menu">
-                                <li class="nav-item">
-                                    <a href="pages/error/404.html" class="nav-link">404</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/error/500.html" class="nav-link">500</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item nav-category">Docs</li>
                     <li class="nav-item">

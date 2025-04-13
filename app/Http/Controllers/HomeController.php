@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Subscribe;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -34,5 +35,11 @@ class HomeController extends Controller
             'password' => bcrypt($request->password),
         ]);
         return back()->with('user_add', 'User added successfully');
+    }
+    public function Subscriber_list(){
+        $subscribers = Subscribe::all();
+        return view('admin.subscribe.index',[
+            'subscribers' => $subscribers,
+        ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LogoController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
@@ -108,3 +109,12 @@ Route::post('/getstatus-faveicon', [FaveiconController::class, 'getstatus_faveic
 Route::get('/faveicon/edit/{id}', [FaveiconController::class, 'faveicon_edit'])->name('faveicon.edit');
 Route::post('/faveicon/update/{id}', [FaveiconController::class, 'faveicon_update'])->name('faveicon.update');
 Route::get('/faveicon/delete/{id}', [FaveiconController::class, 'faveicon_delete'])->name('faveicon.delete');
+
+// offer
+Route::get('/offer', [OfferController::class, 'offer'])->name('offer');
+Route::post('/offer/update/{id}', [OfferController::class, 'offer1_update'])->name('offer1.update');
+Route::post('/offer/update2/{id}', [OfferController::class, 'offer2_update'])->name('offer2.update');
+
+// subscribe
+Route::post('/subscribe/store', [FrontendController::class, 'subscribe_store'])->name('subscribe.store');
+Route::get('/subscribe/list', [HomeController::class, 'Subscriber_list'])->name('Subscriber.list');

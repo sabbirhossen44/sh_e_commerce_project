@@ -30,6 +30,7 @@
     <link href="{{asset('frontend')}}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/odometer-theme-default.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/sass/style.css" rel="stylesheet">
+    @yield('style')
 </head>
 
 <body>
@@ -118,12 +119,6 @@
                                 <div class="category">
                                     <select name="service" class="form-control">
                                         <option disabled="disabled" selected="">All Category</option>
-                                        {{-- <option>Men</option>
-                                        <option>Women</option>
-                                        <option>Kids</option>
-                                        <option>Sales</option>
-                                        <option>Perfect Cake</option>
-                                        <option>All Of The Above</option> --}}
                                         @foreach (App\Models\Category::all() as $category)
                                             <option value="{{$category->id}}">{{$category->category_name}}</option>
                                         @endforeach
@@ -471,5 +466,6 @@
     <script src="{{asset('frontend')}}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
     <script src="{{asset('frontend')}}/js/script.js"></script>
+    @yield('footer_scrtipt')
 </body>
 </html>

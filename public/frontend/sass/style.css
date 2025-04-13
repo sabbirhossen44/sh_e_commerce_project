@@ -5911,7 +5911,7 @@ img {
       -ms-flex-pack: left;
           justify-content: left;
   z-index: 1;
-  background: url(../images/offer-bg.jpg);
+
   background-position: center;
   background-size: cover;
   -o-object-fit: cover;
@@ -6132,7 +6132,7 @@ img {
           justify-content: center;
   position: relative;
   z-index: 1;
-  background: url(../images/banner-bg.jpg);
+  
   background-position: center;
   background-size: cover;
   -o-object-fit: cover;
