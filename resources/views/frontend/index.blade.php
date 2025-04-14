@@ -147,13 +147,20 @@
                                 </div>
                                 <div class="text">
                                     @if (strlen($product->product_name) > 30)
-                                        <h2>
-                                            <a title="{{$product->product_name}}"
-                                                href="product-single.html">{{substr($product->product_name, 0, 30) . '..'}}</a>
+                                        <h2 >
+                                            <a href="{{route('product.details', $product->slug)}}" class="cursor-pointer" title="{{$product->product_name}}"> {{substr($product->product_name, 0, 30) . '..'}}</a>
+                                           
                                         </h2>
 
                                     @else
-                                        <h2><a title="{{$product->product_name}} href=" product.html">{{$product->product_name}}</a></h2>
+                                        {{-- <h2 >
+                                            <a  title="{{$product->product_name}} href="{{route('product.details')}}">{{$product->product_name}}</a>
+                                        </h2> --}}
+                                        <h2>
+                                            <a href="{{ route('product.details', $product->slug) }}" title="{{ $product->product_name }}">
+                                                {{ $product->product_name }}
+                                            </a>
+                                        </h2>
 
                                     @endif
                                     <div class="rating-product">

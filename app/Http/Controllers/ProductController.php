@@ -37,6 +37,7 @@ class ProductController extends Controller
     }
     public function product_stroe(Request $request)
     {
+        
         $request->validate([
             'category_id' => 'required',
             'sub_category_id' => 'required',
@@ -54,6 +55,8 @@ class ProductController extends Controller
         $logo = $request->preview;
         $file_name = Str::lower(str_replace(' ', '_', $request->product_name)) . random_int(5000, 50000) . time() . '.' . $logo->getClientOriginalExtension();
         $logo->move(public_path('uploads/product/preview/'), $file_name);
+        $remove = array("@", "#", "(",")","*", "/", " ", '""');
+        $sulg = Str::lower(str_replace($remove, '-', $request->product_name)) . random_int(5000, 500000) . time();
 
         $Product_id = Product::insertGetId([
             'category_id' => $request->category_id,
@@ -68,6 +71,7 @@ class ProductController extends Controller
             'long_desp' => $request->long_desp,
             'addi_info' => $request->addi_info,
             'preview' => $file_name,
+            'slug' => $sulg,
             'created_at' => Carbon::now(),
         ]);
 

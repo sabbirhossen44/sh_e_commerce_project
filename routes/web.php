@@ -3,6 +3,7 @@
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FaveiconController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
@@ -118,3 +119,16 @@ Route::post('/offer/update2/{id}', [OfferController::class, 'offer2_update'])->n
 // subscribe
 Route::post('/subscribe/store', [FrontendController::class, 'subscribe_store'])->name('subscribe.store');
 Route::get('/subscribe/list', [HomeController::class, 'Subscriber_list'])->name('Subscriber.list');
+
+
+// product deteails
+
+Route::get('product/details/{slug}', [FrontendController::class, 'product_details'])->name('product.details');
+Route::post('/getSize', [FrontendController::class, 'getSize']);
+Route::post('/getQuantity', [FrontendController::class, 'getQuantity']);
+
+
+// customer
+Route::get('/ustomer/login' , [CustomerAuthController::class, 'customer_login'])->name('customer.login');
+Route::get('/ustomer/register' , [CustomerAuthController::class, 'customer_register'])->name('customer.register');
+Route::post('/ustomer/store' , [CustomerAuthController::class, 'customer_store'])->name('customer.store');
