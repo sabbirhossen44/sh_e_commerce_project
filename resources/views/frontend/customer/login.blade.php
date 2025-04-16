@@ -57,7 +57,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="wpo-accountWrapper" action="#" method="POST">
+                        <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST">
                             @csrf
                             <div class="wpo-accountInfo">
                                 <div class="wpo-accountInfoHeader">
@@ -90,6 +90,7 @@
                                 <div class="fromTitle">
                                     <h2>Login</h2>
                                     <p>Sign into your pages account</p>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-12">
@@ -98,19 +99,24 @@
                                         @error('email')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
+                                        @if (session('exist'))
+                                            <span class="text-danger">{{session('exist')}}</span>
+                                        @endif
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input class="pwd6" type="password"
-                                                name="password">
+                                            <input class="pwd6" type="password" name="password">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default reveal6" type="button"><i
                                                         class="ti-eye"></i></button>
                                             </span>
                                             @error('password')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                            @if (session('password_error'))
+                                            <span class="text-danger">{{session('password_error')}}</span>
+                                        @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-12">
