@@ -48,14 +48,6 @@ class CustomerController extends Controller
                 'photo' => $file_name,
             ]);
         }
-        // else{
-        //     $photo = $request->file('photo');
-        //     $file_name = $request->fname. time(). random_int(5000, 5000000).'.'. $photo->getClientOriginalExtension();
-        //     $photo->move(public_path('uploads/customer/'),$file_name);
-        //     $customer->update([
-        //         'photo' => $file_name,
-        //     ]);
-        // }
         $customer->update([
             'fname' => $request->fname,
             'lname' => $request->lname,

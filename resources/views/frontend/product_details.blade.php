@@ -22,110 +22,124 @@
         <div class="product-single-section section-padding">
             <div class="container">
                 <div class="product-details">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5">
-                            <div class="product-single-img">
-                                <div class="product-active owl-carousel">
-                                    @foreach ($gallery as $gall)
-                                        <div class="item">
-                                            <img src="{{asset('uploads/product/gallery/' . $gall->gallery)}}" alt="">
-                                        </div>
-                                    @endforeach
+                    <form action="{{route('add.cart')}}" method="post">
+                        @csrf
+                        <div class="row align-items-center">
+                            <div class="col-lg-5">
+                                <div class="product-single-img">
+                                    <div class="product-active owl-carousel">
+                                        @foreach ($gallery as $gall)
+                                            <div class="item">
+                                                <img src="{{asset('uploads/product/gallery/' . $gall->gallery)}}" alt="">
+                                            </div>
+                                        @endforeach
 
 
+                                    </div>
+                                    <div class="product-thumbnil-active  owl-carousel">
+                                        @foreach ($gallery as $gall)
+                                            <div class="item">
+                                                <img src="{{asset('uploads/product/gallery/' . $gall->gallery)}}" alt="">
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                <div class="product-thumbnil-active  owl-carousel">
-                                    @foreach ($gallery as $gall)
-                                        <div class="item">
-                                            <img src="{{asset('uploads/product/gallery/' . $gall->gallery)}}" alt="">
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="product-single-content">
+                                    <h2>{{$product_info->product_name}}</h2>
+                                    <div class="price">
+                                        <span class="present-price">&#2547;{{$product_info->after_discount}}</span>
+                                        @if ($product_info->discount)
+                                            <del class="old-price">&#2547;{{$product_info->price}}</del>
+                                        @endif
+                                    </div>
+
+                                    <div class="rating-product">
+                                        <i class="fi flaticon-star"></i>
+                                        <i class="fi flaticon-star"></i>
+                                        <i class="fi flaticon-star"></i>
+                                        <i class="fi flaticon-star"></i>
+                                        <i class="fi flaticon-star"></i>
+                                        <span>120</span>
+                                    </div>
+                                    <p>{{$product_info->short_desp}}</p>
+                                    <div class="product-filter-item color">
+                                        <div class="color-name">
+                                            <span>Color :</span>
+                                            <ul>
+                                                @foreach ($available_color as $color)
+                                                    @if ($color->rel_to_color->color_name == 'N/A')
+                                                        <li class="color"><input checked id="color{{$color->color_id}}" type="radio"
+                                                                name="color_id" class="color_id" value="{{$color->color_id}}">
+                                                            <label for="color{{$color->color_id}}"
+                                                                style="background: {{$color->rel_to_color->color_code}};">NA</label>
+                                                        </li>
+                                                    @else
+                                                        <li class="color"><input id="color{{$color->color_id}}" type="radio"
+                                                                name="color_id" class="color_id" value="{{$color->color_id}}">
+                                                            <label for="color{{$color->color_id}}"
+                                                                style="background: {{$color->rel_to_color->color_code}};"></label>
+                                                        </li>
+                                                    @endif
+
+                                                @endforeach
+
+                                            </ul>
+                                            @error('color_id')
+                                                <strong class="text-danger">Color Is Required</strong>
+                                            @enderror
                                         </div>
-                                    @endforeach
+                                    </div>
+                                    <div class="product-filter-item color filter-size">
+                                        <div class="color-name">
+                                            <span>Sizes:</span>
+                                            <ul class="size_aval">
+                                                @foreach ($available_size as $size)
+                                                    <li class="color"><input class="size_id" id="size{{$size->size_id}}"
+                                                            type="radio" name="size_id" value="{{$size->size_id}}">
+                                                        <label
+                                                            for="size{{$size->size_id}}">{{$size->rel_to_size->size_name}}</label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            @error('size_id')
+                                                <strong class="text-danger">Size Is Required</strong>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="pro-single-btn">
+                                        <div class="quantity cart-plus-minus">
+                                            <input class="text-value" name="quantity" type="text" value="1">
+                                        </div>
+
+                                        @auth('customer')
+                                            {{-- <a href="{{route('add.cart')}}" class="theme-btn-s2">Add to cart</a> --}}
+                                            <button type="submit" class="theme-btn-s2">Add to cart</button>
+                                        @else
+                                            <a href="{{route('customer.login')}}" class="theme-btn-s2">Add to cart</a>
+                                        @endauth
+                                        <a href="#" class="wl-btn "><i class="fi flaticon-heart"></i></a>
+                                    </div>
+                                    <input type="hidden" name="product_id" value="{{$product_info->id}}">
+                                    <ul class="important-text">
+                                        <li><span id="quan"></span></li>
+                                        <li><span>SKU: </span>FTE569P</li>
+                                        <li><span>Categories: </span>{{$product_info->rel_to_cat->category_name}}</li>
+                                        @php
+                                            $after_explode = explode(',', $product_info->tags);
+                                        @endphp
+                                        <li><span>Tags:
+                                                @foreach ($after_explode as $tags)
+                                                    <a href="" class="badge bg-warning text-dark">{{$tags}}</a>
+                                                @endforeach
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-7">
-                            <div class="product-single-content">
-                                <h2>{{$product_info->product_name}}</h2>
-                                <div class="price">
-                                    <span class="present-price">&#2547;{{$product_info->after_discount}}</span>
-                                    @if ($product_info->discount)
-                                        <del class="old-price">&#2547;{{$product_info->price}}</del>
-                                    @endif
-                                </div>
-
-                                <div class="rating-product">
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <span>120</span>
-                                </div>
-                                <p>{{$product_info->short_desp}}</p>
-                                <div class="product-filter-item color">
-                                    <div class="color-name">
-                                        <span>Color :</span>
-                                        <ul>
-                                            @foreach ($available_color as $color)
-                                                @if ($color->rel_to_color->color_name == 'N/A')
-                                                    <li class="color"><input checked id="color{{$color->color_id}}"
-                                                            type="radio" name="color_id" class="color_id"
-                                                            value="{{$color->color_id}}">
-                                                        <label for="color{{$color->color_id}}"
-                                                            style="background: {{$color->rel_to_color->color_code}};">NA</label>
-                                                    </li>
-                                                @else
-                                                    <li class="color"><input id="color{{$color->color_id}}" type="radio"
-                                                            name="color_id" class="color_id" value="{{$color->color_id}}">
-                                                        <label for="color{{$color->color_id}}"
-                                                            style="background: {{$color->rel_to_color->color_code}};"></label>
-                                                    </li>
-                                                @endif
-
-                                            @endforeach
-
-
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="product-filter-item color filter-size">
-                                    <div class="color-name">
-                                        <span>Sizes:</span>
-                                        <ul class="size_aval">
-                                            @foreach ($available_size as $size)
-                                                <li class="color"><input class="size_id" id="size{{$size->size_id}}"
-                                                        type="radio" name="size_id" value="{{$size->size_id}}">
-                                                    <label
-                                                        for="size{{$size->size_id}}">{{$size->rel_to_size->size_name}}</label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="pro-single-btn">
-                                    <div class="quantity cart-plus-minus">
-                                        <input class="text-value" type="text" value="1">
-                                    </div>
-                                    <a href="#" class="theme-btn-s2">Add to cart</a>
-                                    <a href="#" class="wl-btn "><i class="fi flaticon-heart"></i></a>
-                                </div>
-                                <ul class="important-text">
-                                    <li><span id="quan"></span></li>
-                                    <li><span>SKU: </span>FTE569P</li>
-                                    <li><span>Categories: </span>{{$product_info->rel_to_cat->category_name}}</li>
-                                    @php
-                                        $after_explode = explode(',', $product_info->tags);
-                                    @endphp
-                                    <li><span>Tags:
-                                            @foreach ($after_explode as $tags)
-                                                <a href="" class="badge bg-warning text-dark">{{$tags}}</a>
-                                            @endforeach
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="product-tab-area">
                     <ul class="nav nav-mb-3 main-tab" id="tab" role="tablist">
@@ -390,8 +404,8 @@
                         $.ajax({
                             type: 'POST',
                             url: '/getQuantity',
-                            data: { 'color_id': color_id, 'product_id': product_id , 'size_id':size_id},
-                            success: function (data){
+                            data: { 'color_id': color_id, 'product_id': product_id, 'size_id': size_id },
+                            success: function (data) {
                                 $('#quan').html(data);
                             }
                         });
@@ -403,4 +417,17 @@
             })
         })
     </script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+
 @endsection
