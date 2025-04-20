@@ -121,10 +121,38 @@
                             </form>
                         </div>
                         <div class="col-lg-4 col-12">
-                            <div class="apply-area mb-3">
-                                <input type="text" class="form-control" placeholder="Enter your coupon">
-                                <button class="theme-btn-s2" type="submit">Apply</button>
-                            </div>
+                            
+                            @if ($message)
+                                <div class="alert alert-danger " id="message">{{$message}}</div>
+                            @endif
+                            @if ($message_sec)
+                                <div class="alert alert-success " id="message_sec">{{$message_sec}}</div>
+                            @endif
+                            <form action="{{route('cart')}}" method="get">
+                                <div class="apply-area mb-3">
+                                    <input type="text" name="coupon" class="form-control" placeholder="Enter your coupon">
+                                     <button class="theme-btn-s2" type="submit">Apply</button>
+                                     
+                                </div>
+                            </form>
+                                @php
+                                    
+                                    $final_discount =0;
+                                    if ($type == 1) {
+                                        $final_discount = round($subtotal * $amount / 100);
+                                    } elseif ($type == 2) {
+                                        $final_discount = round($subtotal - $amount);
+                                    }else{
+                                        $final_discount = 0;
+                                    }
+                                    $final_total = $subtotal - $final_discount;
+                                @endphp
+                                @php
+                                    session([
+                                        'discount' => $final_discount,
+                                        'final_total' => $final_total,
+                                    ])
+                                @endphp
                             <div class="cart-total-wrap">
                                 <h3>Cart Totals</h3>
                                 <div class="sub-total">
@@ -133,13 +161,13 @@
                                 </div>
                                 <div class="sub-total my-3">
                                     <h4>Discount</h4>
-                                    <span>00.00</span>
+                                    <span>&#2547;{{$final_discount}}</span>
                                 </div>
                                 <div class="total mb-3">
                                     <h4>Total</h4>
-                                    <span>&#2547;{{ $subtotal}}</span>
+                                    <span>&#2547;{{ $final_total }}</span>
                                 </div>
-                                <a class="theme-btn-s2" href="checkout.html">Proceed To CheckOut</a>
+                                <a class="theme-btn-s2" href="{{route('checkout')}}">Proceed To CheckOut</a>
                             </div>
                         </div>
                     </div>
@@ -261,4 +289,22 @@
     <!-- end of page-wrapper -->
 
 
+@endsection
+@section('footer_scrtipt')
+    <script>
+        setTimeout(() => {
+            const message = document.getElementById('message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
+    <script>
+        setTimeout(() => {
+            const message = document.getElementById('message_sec');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
 @endsection

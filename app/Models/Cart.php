@@ -11,4 +11,4 @@ class Cart extends Model
     public function rel_to_product(){
         return $this->belongsTo(Product::class, 'product_id');
     }
-}
+}       

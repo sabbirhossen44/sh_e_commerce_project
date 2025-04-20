@@ -25,6 +25,7 @@
     <link href="{{asset('frontend')}}/css/owl.carousel.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/owl.theme.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/slick.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="{{asset('frontend')}}/css/slick-theme.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/swiper.min.css" rel="stylesheet">
     <link href="{{asset('frontend')}}/css/owl.transitions.css" rel="stylesheet">
@@ -472,6 +473,7 @@
     <script src="{{asset('frontend')}}/js/modernizr.custom.js"></script>
     <script src="{{asset('frontend')}}/js/jquery.dlmenu.js"></script>
     <script src="{{asset('frontend')}}/js/jquery-plugin-collection.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Custom script for this template -->
     <script src="{{asset('frontend')}}/js/script.js"></script>
     @yield('footer_scrtipt')
