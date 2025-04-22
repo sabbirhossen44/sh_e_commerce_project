@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
     function rel_to_color(){
         return $this->belongsTo(Color::class, 'color_id');
     }

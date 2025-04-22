@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
+use PDF;
 
 class CustomerController extends Controller
 {
@@ -58,5 +60,22 @@ class CustomerController extends Controller
         ]);
         return back()->with('information_update', 'Customer Information Updated!');
 
+    }
+    public function my_orders(){
+        $my_orders = Order::where('customer_id', Auth::guard('customer')->id())->latest()->get();
+        return view('frontend.customer.myOrders',[
+            'my_orders' => $my_orders,
+        ]);
+    }
+    public function download_invoice($id){
+        $orders = Order::find($id);
+        
+        $pdf = PDF::loadView('frontend.customer.invoiceDownload', [
+            'order_id' => $orders->order_id,
+        ]);
+
+        return $pdf->stream();
+
+        // return $pdf->download('myOrders.pdf');
     }
 }

@@ -23,7 +23,7 @@
             @if (session('information_update'))
                 <div class="alert alert-success">{{session('information_update')}}</div>
             @endif
-            <div class="col-md-3">
+            {{-- <div class="col-md-3">
                 <div class="card text-center">
                     @if (Auth::guard('customer')->user()->photo)
                         <img src="{{ asset('uploads/customer/' . Auth::guard('customer')->user()->photo) }}" alt="User Image"
@@ -39,13 +39,16 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item py-3 bg-light"><a href="{{route('customer.profile')}}" class="text-dark">Profile</a></li>
-                        <li class="list-group-item py-3 bg-light"><a href="" class="text-dark">My Order</a></li>
+                        <li class="list-group-item py-3 bg-light"><a href="{{{route('my.orders')}}}" class="text-dark">My Order</a></li>
                         <li class="list-group-item py-3 bg-light"><a href="" class="text-dark">My Wishlist</a></li>
                         <li class="list-group-item py-3 bg-light"><a href="{{route('customer.logout')}}"
                                 class="text-dark">Logout</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
+            @include('frontend.customer.includes.profile_sidebar')
+
+            
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">

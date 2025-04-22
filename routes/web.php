@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LogoController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
@@ -140,6 +141,8 @@ Route::post('/customer/log', [CustomerAuthController::class, 'customer_logged'])
 Route::get('/customer/profile/', [CustomerController::class, 'customer_profile'])->name('customer.profile');
 Route::get('/customer/logout/', [CustomerController::class, 'customer_logout'])->name('customer.logout');
 Route::post('/customer/profile/update', [CustomerController::class, 'customer_profile_update'])->name('customer.profile.update');
+Route::get('/customer/orders', [CustomerController::class, 'my_orders'])->name('my.orders');
+Route::get('/customer/downloa/{id}', [CustomerController::class, 'download_invoice'])->name('download.invoice');
 
 
 // cart
@@ -163,3 +166,14 @@ Route::post('/getcity', [CheckoutController::class, 'getcity']);
 Route::post('/getshipcity', [CheckoutController::class, 'getshipcity']);
 Route::post('/order/store', [CheckoutController::class, 'order_store'])->name('order.store');
 Route::get('/order/success', [CheckoutController::class, 'order_success'])->name('order.success');
+
+
+// orders
+Route::get('/orders', [OrdersController::class, 'orders'])->name('orders');
+Route::Post('/orders/status/update/{id}', [OrdersController::class, 'order_status_update'])->name('order.status.update');
+Route::get('/cancel/order/{id}', [OrdersController::class, 'cancel_order'])->name('cancel.order');
+Route::post('/cancel/order/request/{id}', [OrdersController::class, 'cancel_order_request'])->name('cancel.order.request');
+Route::get('/order/cancel/reques/list', [OrdersController::class, 'order_cancel_list'])->name('order.cancel.lists');
+Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
+Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
+Route::get('/order/cancel/accept/{id}', [OrdersController::class, 'order_cancel_accept'])->name('order.cancel.accept');

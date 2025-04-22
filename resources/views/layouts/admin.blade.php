@@ -124,58 +124,23 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('coupon')}}"> 
+                        <a class="nav-link" href="{{route('coupon')}}">
                             <i class="link-icon" data-feather="inbox"></i>
                             <span class="link-title">Coupon</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#charts" role="button" aria-expanded="false"
-                            aria-controls="charts">
+                        <a class="nav-link" href="{{route('orders')}}" aria-controls="charts">
                             <i class="link-icon" data-feather="pie-chart"></i>
-                            <span class="link-title">Charts</span>
-                            <i class="link-arrow" data-feather="chevron-down"></i>
+                            <span class="link-title">Orders</span>
                         </a>
-                        <div class="collapse" id="charts">
-                            <ul class="nav sub-menu">
-                                <li class="nav-item">
-                                    <a href="pages/charts/apex.html" class="nav-link">Apex</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">ChartJs</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">Flot</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/morrisjs.html" class="nav-link">Morris</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/peity.html" class="nav-link">Peity</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/sparkline.html" class="nav-link">Sparkline</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#tables" role="button" aria-expanded="false"
-                            aria-controls="tables">
+                        <a class="nav-link"  href="{{route('order.cancel.lists')}}">
                             <i class="link-icon" data-feather="layout"></i>
-                            <span class="link-title">Table</span>
-                            <i class="link-arrow" data-feather="chevron-down"></i>
+                            <span class="link-title">Order Cancel List</span>
                         </a>
-                        <div class="collapse" id="tables">
-                            <ul class="nav sub-menu">
-                                <li class="nav-item">
-                                    <a href="pages/tables/basic-table.html" class="nav-link">Basic Tables</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/tables/data-table.html" class="nav-link">Data Table</a>
-                                </li>
-                            </ul>
-                        </div>
+                        
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#icons" role="button" aria-expanded="false"
@@ -212,7 +177,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  href="{{route('offer')}}" >
+                        <a class="nav-link" href="{{route('offer')}}">
                             <i class="link-icon" data-feather="trello"></i>
                             <span class="link-title">Exciting Offers</span>
                             {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
@@ -430,20 +395,36 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="notificationDropdown">
                                 <div class="dropdown-header d-flex align-items-center justify-content-between">
-                                    <p class="mb-0 font-weight-medium">6 New Notifications</p>
-                                    <a href="javascript:;" class="text-muted">Clear all</a>
+                                    <p class="mb-0 font-weight-medium">New Notifications</p>
+                                    {{-- <a href="javascript:;" class="text-muted">Clear all</a> --}}
                                 </div>
                                 <div class="dropdown-body">
-                                    <a href="javascript:;" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="user-plus"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>New customer registered</p>
-                                            <p class="sub-text text-muted">2 sec ago</p>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="dropdown-item">
+                                    @foreach (App\Models\Order::latest()->take(1)->get() as $order)
+                                        <a href="{{route('orders')}}" class="dropdown-item">
+                                            <div class="icon">
+                                                <i data-feather="user-plus"></i>
+                                            </div>
+                                            <div class="content">
+                                                <p>New Order</p>
+                                                <p>Order ID: {{$order->order_id}}</p>
+                                                <p class="sub-text text-muted">{{$order->created_at->diffForHumans()}}</p>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                    @foreach (App\Models\OrderCancel::latest()->take(1)->get() as $orderCancel)
+                                        <a href="{{route('order.cancel.lists')}}" class="dropdown-item">
+                                            <div class="icon">
+                                                <i data-feather="user-plus"></i>
+                                            </div>
+                                            <div class="content">
+                                                <p>Order Cancel Request</p>
+                                                <p>Order ID: {{App\Models\Order::find($orderCancel->order_id)->order_id}}</p>
+                                                <p class="sub-text text-muted">{{$orderCancel->created_at->diffForHumans()}}</p>
+                                            </div>
+                                        </a>
+                                    @endforeach
+
+                                    {{-- <a href="javascript:;" class="dropdown-item">
                                         <div class="icon">
                                             <i data-feather="gift"></i>
                                         </div>
@@ -478,10 +459,10 @@
                                             <p>Download completed</p>
                                             <p class="sub-text text-muted">6 hrs ago</p>
                                         </div>
-                                    </a>
+                                    </a> --}}
                                 </div>
                                 <div class="dropdown-footer d-flex align-items-center justify-content-center">
-                                    <a href="javascript:;">View all</a>
+                                    <a href="{{route('orders')}}">View all</a>
                                 </div>
                             </div>
                         </li>
