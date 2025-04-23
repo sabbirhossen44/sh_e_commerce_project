@@ -66,7 +66,7 @@ class CheckoutController extends Controller
                 'ship_country' => 'required',
                 'ship_city' => 'required',
                 'ship_zip' => 'required',
-                'ship_company' => 'required',
+                'ship_company' => 'nullable',
                 'ship_email' => 'required|email',
                 'ship_phone' => 'required',
                 'ship_address' => 'required',
@@ -146,7 +146,8 @@ class CheckoutController extends Controller
             Mail::to($request->email)->send(new InvoiceMail($order_id));
             return redirect()->route('order.success')->with('success', $order_id);
         } elseif ($request->payment_method == 2) {
-            # code...
+            $data = $request->all();
+            return redirect()->route('sslpay')->with('data', $data);
         } elseif ($request->payment_method == 3) {
             # code...
         } else {

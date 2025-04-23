@@ -1,26 +1,27 @@
 <?php
 
-use App\Http\Controllers\BannerController;
-use App\Http\Controllers\BrandController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\CustomerAuthController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\FaveiconController;
-use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LogoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SubcategoryController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FaveiconController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\VariationController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 Route::get('/', [FrontendController::class, 'welcome'])->name('welcome');
 
@@ -177,3 +178,18 @@ Route::get('/order/cancel/reques/list', [OrdersController::class, 'order_cancel_
 Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
 Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
 Route::get('/order/cancel/accept/{id}', [OrdersController::class, 'order_cancel_accept'])->name('order.cancel.accept');
+
+
+
+// SSLCOMMERZ Start
+
+
+Route::get('/pay', [SslCommerzPaymentController::class, 'index'])->name('sslpay');
+Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
+
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END
