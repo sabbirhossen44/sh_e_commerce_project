@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     public function dashboard(){
-        $data = Sslorder::all();
-        return view('dashboard', compact('data'));
+        return view('dashboard');
     }
     public function user_list(){
         $users = User::where('id', '!=', Auth::id())->get();

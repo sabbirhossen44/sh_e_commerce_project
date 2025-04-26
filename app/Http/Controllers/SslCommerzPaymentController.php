@@ -2,9 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Billing;
+use App\Models\Shipping;
 use App\Models\sslorder;
+use App\Mail\InvoiceMail;
+use App\Models\Inventory;
+use App\Models\OrderProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Library\SslCommerz\SslCommerzNotification;
 
 class SslCommerzPaymentController extends Controller
@@ -30,7 +40,8 @@ class SslCommerzPaymentController extends Controller
         # In "sslorders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data = array();
-        $post_data['total_amount'] = $data['total']+$data['charge']; # You cant not pay less than 10
+        $post_data['total_amount'] = $data['total'] + $data['charge']; # You cant not pay less than 10
+        // $post_data['total_amount'] = '10';
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = uniqid(); // tran_id must be unique
 
@@ -68,36 +79,107 @@ class SslCommerzPaymentController extends Controller
         $post_data['value_d'] = "ref004";
 
         #Before  going to initiate the payment order status need to insert or update as Pending.
-        $update_product = DB::table('sslorders')
-            ->where('transaction_id', $post_data['tran_id'])
-            ->updateOrInsert([
-                'name' => $data['fname'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
-                'amount' => $data['total'],
-                'status' => 'Pending',
-                'address' => $data['address'],
-                'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency'],
-                'lname' => $data['lname'],
-                'country' => $data['country'],
-                'city' => $data['city'],
-                'zip' => $data['zip'],
-                'company' => $data['company'],
-                'ship_fname' => $data['ship_fname'],
-                'notes' => $data['notes'],
-                'ship_lname' => $data['ship_lname'],
-                'ship_country' => $data['ship_country'],
-                'ship_city' => $data['ship_city'],
-                'ship_zip' => $data['ship_zip'],
-                'ship_company' => $data['ship_company'],
-                'ship_email' => $data['ship_email'],
-                'ship_phone' => $data['ship_phone'],
-                'ship_address' => $data['ship_address'],
-                'charge' => $data['charge'],
-                'payment_method' => $data['payment_method'],
-                'discount' => $data['discount'],
-            ]);
+        if ($data['ship_to_different'] == 0) {
+            $update_product = DB::table('sslorders')
+                ->where('transaction_id', $post_data['tran_id'])
+                ->updateOrInsert([
+                    'name' => $data['fname'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'amount' => $data['total'],
+                    'status' => 'Pending',
+                    'address' => $data['address'],
+                    'transaction_id' => $post_data['tran_id'],
+                    'currency' => $post_data['currency'],
+                    'lname' => $data['lname'],
+                    'country' => $data['country'],
+                    'city' => $data['city'],
+                    'zip' => $data['zip'],
+                    'company' => $data['company'],
+                    'ship_fname' => $data['fname'],
+                    'notes' => $data['notes'],
+                    'ship_lname' => $data['lname'],
+                    'ship_country' => $data['country'],
+                    'ship_city' => $data['city'],
+                    'ship_zip' => $data['zip'],
+                    'ship_company' => $data['company'],
+                    'ship_email' => $data['email'],
+                    'ship_phone' => $data['phone'],
+                    'ship_address' => $data['address'],
+                    'charge' => $data['charge'],
+                    'payment_method' => $data['payment_method'],
+                    'discount' => $data['discount'],
+                    'ship_chack' => $data['ship_to_different'],
+                    'customer_id' => $data['customer_id'],
+                ]);
+        } else {
+            $update_product = DB::table('sslorders')
+                ->where('transaction_id', $post_data['tran_id'])
+                ->updateOrInsert([
+                    'name' => $data['fname'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'amount' => $data['total'],
+                    'status' => 'Pending',
+                    'address' => $data['address'],
+                    'transaction_id' => $post_data['tran_id'],
+                    'currency' => $post_data['currency'],
+                    'lname' => $data['lname'],
+                    'country' => $data['country'],
+                    'city' => $data['city'],
+                    'zip' => $data['zip'],
+                    'company' => $data['company'],
+                    'ship_fname' => $data['ship_fname'],
+                    'notes' => $data['notes'],
+                    'ship_lname' => $data['ship_lname'],
+                    'ship_country' => $data['ship_country'],
+                    'ship_city' => $data['ship_city'],
+                    'ship_zip' => $data['ship_zip'],
+                    'ship_company' => $data['ship_company'],
+                    'ship_email' => $data['ship_email'],
+                    'ship_phone' => $data['ship_phone'],
+                    'ship_address' => $data['ship_address'],
+                    'charge' => $data['charge'],
+                    'payment_method' => $data['payment_method'],
+                    'discount' => $data['discount'],
+                    'ship_chack' => $data['ship_to_different'],
+                    'customer_id' => $data['customer_id'],
+                ]);
+        }
+
+        // $update_product = DB::table('sslorders')
+        //     ->where('transaction_id', $post_data['tran_id'])
+        //     ->updateOrInsert([
+        //         'name' => $data['fname'],
+        //         'email' => $data['email'],
+        //         'phone' => $data['phone'],
+        //         'amount' => $data['total'],
+        //         'status' => 'Pending',
+        //         'address' => $data['address'],
+        //         'transaction_id' => $post_data['tran_id'],
+        //         'currency' => $post_data['currency'],
+        //         'lname' => $data['lname'],
+        //         'country' => $data['country'],
+        //         'city' => $data['city'],
+        //         'zip' => $data['zip'],
+        //         'company' => $data['company'],
+        //         'ship_fname' => $data['ship_fname'],
+        //         'notes' => $data['notes'],
+        //         'ship_lname' => $data['ship_lname'],
+        //         'ship_country' => $data['ship_country'],
+        //         'ship_city' => $data['ship_city'],
+        //         'ship_zip' => $data['ship_zip'],
+        //         'ship_company' => $data['ship_company'],
+        //         'ship_email' => $data['ship_email'],
+        //         'ship_phone' => $data['ship_phone'],
+        //         'ship_address' => $data['ship_address'],
+        //         'charge' => $data['charge'],
+        //         'payment_method' => $data['payment_method'],
+        //         'discount' => $data['discount'],
+        //         'ship_chack' => $data['ship_to_different'],
+        //         'customer_id' => $data['customer_id'],
+        //     ]);
+
 
         $sslc = new SslCommerzNotification();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
@@ -181,45 +263,121 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        echo "Transaction is Successful";
+        return redirect()->route('order.success');
+        // echo "Transaction is Successful";
 
-        $tran_id = $request->input('tran_id');
-        // return Sslorder::where('transaction_id', $tran_id)->first();
+        // $tran_id = $request->input('tran_id');
         
-        $amount = $request->input('amount');
-        $currency = $request->input('currency');
+        // $data = Sslorder::where('transaction_id', $tran_id)->first();
+        // // echo $data->name;
 
-        $sslc = new SslCommerzNotification();
+        // $order_id = '#' . uniqid() . time();
+        // Order::insert([
+        //     'order_id' => $order_id,
+        //     'customer_id' => $data->customer_id,
+        //     'total' => $data->total + $data->charge,
+        //     'sub_total' => $data->total - $data->discount,
+        //     'discoutn' => $data->discount,
+        //     'charge' => $data->charge,
+        //     'payment_method' => $data->payment_method,
+        //     'created_at' => Carbon::now(),
+        // ]);
+        // Billing::insert([
+        //     'order_id' => $order_id,
+        //     'customer_id' => $data->customer_id,
+        //     'fname' => $data->name,
+        //     'lname' => $data->lname,
+        //     'country_id' => $data->country,
+        //     'city_id' => $data->city,
+        //     'zip' => $data->zip,
+        //     'company' => $data->company,
+        //     'email' => $data->email,
+        //     'phone' => $data->phone,
+        //     'adress' => $data->address,
+        //     'notes' => $data->notes,
+        //     'created_at' => Carbon::now(),
+        // ]);
+        // if ($data->ship_to_different == 1) {
+        //     Shipping::insert([
+        //         'order_id' => $order_id,
+        //         'ship_fname' => $data->ship_fname,
+        //         'ship_lname' => $data->ship_lname,
+        //         'ship_country_id' => $data->ship_country,
+        //         'ship_city_id' => $data->ship_city,
+        //         'ship_zip' => $data->ship_zip,
+        //         'ship_company' => $data->ship_company,
+        //         'ship_email' => $data->ship_email,
+        //         'ship_phone' => $data->ship_phone,
+        //         'ship_adress' => $data->ship_address,
+        //         'created_at' => Carbon::now(),
+        //     ]);
+        // } else {
+        //     Shipping::insert([
+        //         'order_id' => $order_id,
+        //         'ship_fname' => $data->name,
+        //         'ship_lname' => $data->lname,
+        //         'ship_country_id' => $data->country,
+        //         'ship_city_id' => $data->city,
+        //         'ship_zip' => $data->zip,
+        //         'ship_company' => $data->company,
+        //         'ship_email' => $data->email,
+        //         'ship_phone' => $data->phone,
+        //         'ship_adress' => $data->address,
+        //         'created_at' => Carbon::now(),
+        //     ]);
+        // }
+        // $carts = Cart::where('customer_id', $data->customer_id)->get();
+        // foreach ($carts as $cart) {
+        //     OrderProduct::insert([
+        //         'order_id' => $order_id,
+        //         'customer_id' => $data->customer_id,
+        //         'product_id' => $cart->product_id,
+        //         'price' => $cart->rel_to_product->after_discount,
+        //         'color_id' => $cart->color_id,
+        //         'size_id' => $cart->size_id,
+        //         'quantity' => $cart->quantity,
+        //         'created_at' => Carbon::now(),
+        //     ]);
+        //     Cart::find($cart->id)->delete();
+        //     Inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quentity', $cart->quantity);
+        // }
+        // Mail::to($data->email)->send(new InvoiceMail($order_id));
+        // return redirect()->route('order.success')->with('success', $order_id);
 
-        #Check order status in order tabel against the transaction id or order id.
-        $order_details = DB::table('sslorders')
-            ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
+        // $amount = $request->input('amount');
+        // $currency = $request->input('currency');
 
-        if ($order_details->status == 'Pending') {
-            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
+        // $sslc = new SslCommerzNotification();
 
-            if ($validation) {
-                /*
-                That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
-                in order table as Processing or Complete.
-                Here you can also sent sms or email for successfull transaction to customer
-                */
-                $update_product = DB::table('sslorders')
-                    ->where('transaction_id', $tran_id)
-                    ->update(['status' => 'Processing']);
+        // #Check order status in order tabel against the transaction id or order id.
+        // $order_details = DB::table('sslorders')
+        //     ->where('transaction_id', $tran_id)
+        //     ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-                echo "<br >Transaction is successfully Completed";
-            }
-        } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-            /*
-             That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
-             */
-            echo "Transaction is successfully Completed";
-        } else {
-            #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
-        }
+        // if ($order_details->status == 'Pending') {
+        //     $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
+
+        //     if ($validation) {
+        //         /*
+        //         That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
+        //         in order table as Processing or Complete.
+        //         Here you can also sent sms or email for successfull transaction to customer
+        //         */
+        //         $update_product = DB::table('sslorders')
+        //             ->where('transaction_id', $tran_id)
+        //             ->update(['status' => 'Processing']);
+
+        //         echo "<br >Transaction is successfully Completed";
+        //     }
+        // } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
+        //     /*
+        //      That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
+        //      */
+        //     echo "Transaction is successfully Completed";
+        // } else {
+        //     #That means something wrong happened. You can redirect customer to your product page.
+        //     echo "Invalid Transaction";
+        // }
     }
 
     public function fail(Request $request)

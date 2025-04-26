@@ -78,7 +78,7 @@ class CheckoutController extends Controller
                 'order_id' => $order_id,
                 'customer_id' => Auth::guard('customer')->id(),
                 'total' => $request->total + $request->charge,
-                'sub_total' => $request->total + $request->discount,
+                'sub_total' => $request->total - $request->discount,
                 'discoutn' => $request->discount,
                 'charge' => $request->charge,
                 'payment_method' => $request->payment_method,
@@ -149,7 +149,8 @@ class CheckoutController extends Controller
             $data = $request->all();
             return redirect()->route('sslpay')->with('data', $data);
         } elseif ($request->payment_method == 3) {
-            # code...
+            $data = $request->all();
+            return redirect()->route('stripe')->with('data', $data);
         } else {
             # code...
         }

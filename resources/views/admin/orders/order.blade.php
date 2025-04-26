@@ -27,17 +27,17 @@
                                 <td>{{$order->created_at->diffForHumans()}}</td>
                                 <td>
                                     @if ($order->status == 0)
-                                        <span class="badge btn bg-secondary">Placed</span>
+                                        <span class="badge btn bg-secondary text-white">Placed</span>
                                     @elseif ($order->status == 1)
-                                        <span class="badge btn bg-primary">Processing</span>
+                                        <span class="badge btn bg-primary text-white">Processing</span>
                                     @elseif ($order->status == 2)
-                                        <span class="badge btn bg-warning">Shipping</span>
+                                        <span class="badge btn bg-warning text-white">Shipping</span>
                                     @elseif ($order->status == 3)
-                                        <span class="badge btn bg-info">Ready for Deliver</span>
+                                        <span class="badge btn bg-info text-white">Ready for Deliver</span>
                                     @elseif ($order->status == 4)
-                                        <span class="badge btn bg-success">Delivered</span>
+                                        <span class="badge btn bg-success text-white">Delivered</span>
                                     @elseif ($order->status == 5)
-                                        <span class="badge btn bg-danger">Cancel</span>
+                                        <span class="badge btn bg-danger text-white">Cancel</span>
                                     @else
 
                                     @endif

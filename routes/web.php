@@ -21,6 +21,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 Route::get('/', [FrontendController::class, 'welcome'])->name('welcome');
@@ -182,7 +183,8 @@ Route::get('/order/cancel/accept/{id}', [OrdersController::class, 'order_cancel_
 
 
 // SSLCOMMERZ Start
-
+Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
+Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
 
 Route::get('/pay', [SslCommerzPaymentController::class, 'index'])->name('sslpay');
 Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
@@ -193,3 +195,11 @@ Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
 Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 //SSLCOMMERZ END
+
+// Stripe
+Route::controller(StripePaymentController::class)->group(function () {
+
+    Route::get('stripe', 'stripe')->name('stripe');
+
+    Route::post('stripe', 'stripePost')->name('stripe.post');
+});
