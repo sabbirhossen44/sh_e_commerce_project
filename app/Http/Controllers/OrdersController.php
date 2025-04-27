@@ -32,7 +32,7 @@ class OrdersController extends Controller
             foreach (OrderProduct::where('order_id', $orders_id)->get() as $order_product) {
                 Inventory::where('product_id', $order_product->product_id)->where('color_id', $order_product->color_id)->where('size_id', $order_product->size_id)->increment('quentity', $order_product->quantity);
             }
-        }else{
+        } else {
             Order::find($id)->update([
                 'status' => $request->status,
                 'updated_at' => Carbon::now(),
@@ -105,5 +105,20 @@ class OrdersController extends Controller
         }
         $details->delete();
         return redirect()->route('order.cancel.lists')->with('success', 'Order Cancel Request Accepted!');
+    }
+    public function review_store(Request $request, $id)
+    {
+        $request->validate([
+            // 'stars' => 'required',
+            'review' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+        OrderProduct::where('customer_id', Auth::guard('customer')->id())->where('product_id', $id)->first()->update([
+            'review' => $request->review,
+            'star' => $request->stars,
+            'updated_at' => Carbon::now(),
+        ]);
+        return back()->with('Review_text', 'Review submitted successfully!');
     }
 }

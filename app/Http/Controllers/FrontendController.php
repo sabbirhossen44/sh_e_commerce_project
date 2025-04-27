@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Offer1;
 use App\Models\Offer2;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductGallery;
 use App\Models\Subscribe;
@@ -51,11 +52,18 @@ class FrontendController extends Controller
         $gallery = ProductGallery::where('product_id', $product_id)->get();
         $available_color = Inventory::where('product_id', $product_id)->selectRaw('color_id ,SUM(color_id) as sum')->groupBy('color_id')->get();
         $available_size = Inventory::where('product_id', $product_id)->selectRaw('size_id ,SUM(size_id) as sum')->groupBy('size_id')->get();
+        $reviews = OrderProduct::where('product_id', $product_id)->whereNotNull('review')->orderByDesc('star')->take(4)->get();
+        $total_reviews = OrderProduct::where('product_id', $product_id)->whereNotNull('review')->count();
+        $total_star = OrderProduct::where('product_id', $product_id)->whereNotNull('review')->sum('star');
+        // return $reviews;
         return view('frontend.product_details', [
             'product_info' => $product_info,
             'gallery' => $gallery,
             'available_color' => $available_color,
             'available_size' => $available_size,
+            'reviews' => $reviews,
+            'total_reviews' => $total_reviews,
+            'total_star' => $total_star,
         ]);
     }
     public function getSize(Request $request)

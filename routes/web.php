@@ -21,6 +21,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -47,7 +48,6 @@ Route::post('/user/list', [HomeController::class, 'user_add'])->name('user.add')
 Route::get('/user/list', [HomeController::class, 'user_list'])->name('user.list');
 Route::get('/user/delete/{user_id}', [HomeController::class, 'user_delete'])->name('user.delete');
 
-
 // category
 Route::get('/category', [CategoryController::class, 'category'])->name('category');
 Route::post('/category/store', [CategoryController::class, 'category_store'])->name('category.store');
@@ -60,9 +60,7 @@ Route::post('/category/checked_delete/', [CategoryController::class, 'checked_de
 Route::post('/category/checked_restore/', [CategoryController::class, 'checked_restore'])->name('checked.restore');
 Route::get('/category/trash/', [CategoryController::class, 'category_trash'])->name('category.trash');
 
-
 // subcategory
-
 Route::get('/subcategory', [SubcategoryController::class, 'sub_category'])->name('sub.category');
 Route::post('/subcategory/store', [SubcategoryController::class, 'sub_category_store'])->name('sub.category.store');
 Route::get('/subcategory/edit/{id}', [SubcategoryController::class, 'sub_category_edit'])->name('sub.category.edit');
@@ -91,7 +89,6 @@ Route::post('/variation/store', [VariationController::class, 'color_store'])->na
 Route::post('/size/store', [VariationController::class, 'size_store'])->name('size.store');
 Route::get('/size/delete/{id}', [VariationController::class, 'variation_delete'])->name('variation.delete');
 Route::get('/color/delete/{id}', [VariationController::class, 'color_delete'])->name('color.delete');
-
 
 // inventory
 Route::get('/inventory/{id}', [InventoryController::class, 'add_inventory'])->name('add.inventory');
@@ -127,13 +124,10 @@ Route::post('/offer/update2/{id}', [OfferController::class, 'offer2_update'])->n
 Route::post('/subscribe/store', [FrontendController::class, 'subscribe_store'])->name('subscribe.store');
 Route::get('/subscribe/list', [HomeController::class, 'Subscriber_list'])->name('Subscriber.list');
 
-
 // product deteails
-
 Route::get('product/details/{slug}', [FrontendController::class, 'product_details'])->name('product.details');
 Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getQuantity', [FrontendController::class, 'getQuantity']);
-
 
 // customer
 Route::get('/customer/login', [CustomerAuthController::class, 'customer_login'])->name('customer.login');
@@ -145,7 +139,6 @@ Route::get('/customer/logout/', [CustomerController::class, 'customer_logout'])-
 Route::post('/customer/profile/update', [CustomerController::class, 'customer_profile_update'])->name('customer.profile.update');
 Route::get('/customer/orders', [CustomerController::class, 'my_orders'])->name('my.orders');
 Route::get('/customer/downloa/{id}', [CustomerController::class, 'download_invoice'])->name('download.invoice');
-
 
 // cart
 Route::Post('/cart/add', [CartController::class, 'add_cart'])->name('add.cart');
@@ -179,7 +172,7 @@ Route::get('/order/cancel/reques/list', [OrdersController::class, 'order_cancel_
 Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
 Route::get('/cancel/details/view/{id}', [OrdersController::class, 'cancel_details_view'])->name('cancel.details.view');
 Route::get('/order/cancel/accept/{id}', [OrdersController::class, 'order_cancel_accept'])->name('order.cancel.accept');
-
+Route::Post('/order/product/review/{id}', [OrdersController::class, 'review_store'])->name('review.store');
 
 
 // SSLCOMMERZ Start
@@ -196,6 +189,7 @@ Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 //SSLCOMMERZ END
 
+
 // Stripe
 Route::controller(StripePaymentController::class)->group(function () {
 
@@ -203,3 +197,7 @@ Route::controller(StripePaymentController::class)->group(function () {
 
     Route::post('stripe', 'stripePost')->name('stripe.post');
 });
+
+// Roll Manager
+Route::get('/roll/manager', [RoleController::class, 'role_manage'])->name('role.manage');
+Route::post('/permission/sotre', [RoleController::class, 'permission_store'])->name('permission.store');

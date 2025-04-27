@@ -163,13 +163,27 @@
                                         </h2>
 
                                     @endif
+                                    @php
+                                        $total_stars = App\Models\OrderProduct::where('product_id',$product->id)->whereNotNull('review')->sum('star');
+                                        $total_review = App\Models\OrderProduct::where('product_id', $product->id)->whereNotNull('review')->count();
+                                        $avg = 0;
+                                        if ($total_review == 0) {
+                                            $avg = 0;
+                                        } else {
+                                            $avg =round($total_stars / $total_review);
+                                        }
+                                        
+                                    @endphp
                                     <div class="rating-product">
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <span>130</span>
+
+                                        @for ($i =1 ; $i <= $avg; $i++)
+                                        <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i =$avg ; $i <=4 ; $i++)
+                                        <i class="fa fa-star-o"></i>
+                                        @endfor
+                                        {{-- {{$avg}} --}}
+                                        <span>{{$total_review}}</span>
                                     </div>
                                     <div class="price">
                                         <span class="present-price">&#2547;{{$product->after_discount}}</span>
