@@ -1,8 +1,11 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="row">
-        <div class="col-md-6 m-auto">
-           
+    @can('category_edit')
+
+
+        <div class="row">
+            <div class="col-md-6 m-auto">
+
                 <div class="card">
                     <div class="card-header">
                         <h3>Edit Category</h3>
@@ -15,12 +18,13 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="" class="form-label">Category Name</label>
-                                <input type="text" name="category_name" class="form-control" id="" value="{{$category->category_name}}">
+                                <input type="text" name="category_name" class="form-control" id=""
+                                    value="{{$category->category_name}}">
                                 @error('category_name')
                                     <strong class="text-danger">{{$message}}</strong>
                                 @enderror
                                 <div class="my-2">
-                                    <img src="{{asset('uploads/category/'.$category->icon)}}" width="60" alt="">
+                                    <img src="{{asset('uploads/category/' . $category->icon)}}" width="60" alt="">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -30,14 +34,15 @@
                                     <strong class="text-danger">{{$message}}</strong>
                                 @enderror
                             </div>
-    
+
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Update Category</button>
                             </div>
                         </form>
                     </div>
                 </div>
-        
+
+            </div>
         </div>
-    </div>
+    @endcan
 @endsection

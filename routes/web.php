@@ -201,3 +201,9 @@ Route::controller(StripePaymentController::class)->group(function () {
 // Roll Manager
 Route::get('/roll/manager', [RoleController::class, 'role_manage'])->name('role.manage');
 Route::post('/permission/sotre', [RoleController::class, 'permission_store'])->name('permission.store');
+Route::post('/role/sotre', [RoleController::class, 'role_store'])->name('role.store');
+Route::get('/role/delete/{id}', [RoleController::class, 'role_delete'])->name('role.delete');
+Route::get('/user/role/delete/{id}', [RoleController::class, 'user_role_delete'])->name('user.role.delete');
+Route::get('/role/edit/{id}', [RoleController::class, 'role_edit'])->name('role.edit');
+Route::post('/role/update/{id}', [RoleController::class, 'role_update'])->name('role.update');
+Route::post('/assign/role', [RoleController::class, 'assign_role'])->name('assign.role');

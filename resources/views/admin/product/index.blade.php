@@ -82,171 +82,175 @@
     </style>
 @endsection
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h3>Add New Product</h3>
-                    <a href="{{route('product.list')}}" class="btn btn-primary"><i data-feather="list"></i> Product List</a>
-                </div>
-                <div class="card-body">
-                    @if (session('prodect_add'))
-                        <div class="alert alert-success">{{session('prodect_add')}}</div>
-                    @endif
-                    <form action="{{route('product.stroe')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label"> Category</label>
-                                    <select name="category_id" class="fomr-control category" id="">
-                                        <option value="">Select Category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Sub-Category</label>
-                                    <select name="sub_category_id" class="fomr-control subcategory" id="">
-                                        <option value="">Select Sub_Category</option>
-                                        @foreach ($sub_categories as $sub_category)
-                                            <option value="{{$sub_category->id}}">{{$sub_category->sub_category}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('sub_category_id')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Brand</label>
-                                    <select name="brand" class="fomr-control" id="">
-                                        <option value="">Select Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{$brand->id}}">{{$brand->brand_name}}</option>
-
-                                        @endforeach
-                                    </select>
-                                    @error('brand')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Product Name</label>
-                                    <input type="text" name="product_name" class="form-control" id="">
-                                    @error('product_name')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Product Price</label>
-                                    <input type="number" name="product_price" class="form-control" id="">
-                                    @error('product_price')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Discout(%)</label>
-                                    <input type="number" name="discount" class="form-control" id="">
-                                    @error('discount')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Tags</label>
-                                    <input type="text" name="tags[]" class="form-control border-0 p-0" id="input-tags">
-                                    @error('tags')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Short Description</label>
-                                    <input type="text" name="short_desp" class="form-control" id="">
-                                    @error('short_desp')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Long Description</label>
-                                    <textarea name="long_desp" class="form-control summernote" id="" cols="30"
-                                        rows="10"></textarea>
-                                    @error('long_desp')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Additional Information</label>
-                                    <textarea name="addi_info" class="form-control summernote" id="" cols="30"
-                                        rows="10"></textarea>
-                                    @error('addi_info')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">Preview Image</label>
-                                    <input type="file" name="preview" class="form-control" id=""
-                                        onchange="document.getElementById('blah').src= window.URL.createObjectURL(this.files[0])">
-                                    @error('preview')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                    <div class="my-2">
-                                        <img src="" alt="" width="100" id="blah">
+    @can('product_add')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3>Add New Product</h3>
+                        <a href="{{route('product.list')}}" class="btn btn-primary"><i data-feather="list"></i> Product List</a>
+                    </div>
+                    <div class="card-body">
+                        @if (session('prodect_add'))
+                            <div class="alert alert-success">{{session('prodect_add')}}</div>
+                        @endif
+                        <form action="{{route('product.stroe')}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label"> Category</label>
+                                        <select name="category_id" class="fomr-control category" id="">
+                                            <option value="">Select Category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('category_id')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Sub-Category</label>
+                                        <select name="sub_category_id" class="fomr-control subcategory" id="">
+                                            <option value="">Select Sub_Category</option>
+                                            @foreach ($sub_categories as $sub_category)
+                                                <option value="{{$sub_category->id}}">{{$sub_category->sub_category}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('sub_category_id')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Brand</label>
+                                        <select name="brand" class="fomr-control" id="">
+                                            <option value="">Select Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{$brand->id}}">{{$brand->brand_name}}</option>
 
-                                <div class="mb-3">
-                                    <div class="upload__box">
-                                        <div class="upload__btn-box">
-                                            <label for="text" class="form-label">Gallery Image</label> <br>
-                                            <label class="upload__btn">
-                                                <p>Chose File</p>
-                                                <input type="file" multiple="" data-max_length="20" name="gallery[]"
-                                                    class="upload__inputfile form-control">
-                                                @error('gallery')
-                                                    <strong class="text-danger">{{$message}}</strong>
-                                                @enderror
-                                            </label>
+                                            @endforeach
+                                        </select>
+                                        @error('brand')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Product Name</label>
+                                        <input type="text" name="product_name" class="form-control" id="">
+                                        @error('product_name')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Product Price</label>
+                                        <input type="number" name="product_price" class="form-control" id="">
+                                        @error('product_price')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Discout(%)</label>
+                                        <input type="number" name="discount" class="form-control" id="">
+                                        @error('discount')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Tags</label>
+                                        <input type="text" name="tags[]" class="form-control border-0 p-0" id="input-tags">
+                                        @error('tags')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Short Description</label>
+                                        <input type="text" name="short_desp" class="form-control" id="">
+                                        @error('short_desp')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Long Description</label>
+                                        <textarea name="long_desp" class="form-control summernote" id="" cols="30"
+                                            rows="10"></textarea>
+                                        @error('long_desp')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Additional Information</label>
+                                        <textarea name="addi_info" class="form-control summernote" id="" cols="30"
+                                            rows="10"></textarea>
+                                        @error('addi_info')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="text" class="form-label">Preview Image</label>
+                                        <input type="file" name="preview" class="form-control" id=""
+                                            onchange="document.getElementById('blah').src= window.URL.createObjectURL(this.files[0])">
+                                        @error('preview')
+                                            <strong class="text-danger">{{$message}}</strong>
+                                        @enderror
+                                        <div class="my-2">
+                                            <img src="" alt="" width="100" id="blah">
                                         </div>
-                                        <div class="upload__img-wrap"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+
+                                    <div class="mb-3">
+                                        <div class="upload__box">
+                                            <div class="upload__btn-box">
+                                                <label for="text" class="form-label">Gallery Image</label> <br>
+                                                <label class="upload__btn">
+                                                    <p>Chose File</p>
+                                                    <input type="file" multiple="" data-max_length="20" name="gallery[]"
+                                                        class="upload__inputfile form-control">
+                                                    @error('gallery')
+                                                        <strong class="text-danger">{{$message}}</strong>
+                                                    @enderror
+                                                </label>
+                                            </div>
+                                            <div class="upload__img-wrap"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Add Product</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Add Product</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <h3 class="text-warning"> You don't have to access this page</h3>
+    @endcan
 @endsection
 
 
