@@ -31,7 +31,8 @@
                                                 data-link="{{route('brand.delete', $brand->id)}}">
                                                 <i data-feather="trash"></i>
                                             </a>
-
+                                        @else
+                                        No Permission
                                         @endcan
                                     </td>
                                 </tr>
@@ -40,41 +41,43 @@
                     </div>
                 </div>
             </div>
-            @can('brand_add')
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Add New Brand</h3>
-                        </div>
-                        <div class="card-body">
-                            @if (session('brand_add'))
-                                <div class="alert alert-success">{{session('brand_add')}}</div>
-                            @endif
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add New Brand</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (session('brand_add'))
+                            <div class="alert alert-success">{{session('brand_add')}}</div>
+                        @endif
+                        @can('brand_add')
                             <form action="{{route('brand.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Brand Name</label>
-                                    <input type="text" name="brand_name" class="form-control" id="">
-                                    @error('brand_name')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Brand Logo</label>
-                                    <input type="file" name="brand_logo" class="form-control" id="">
-                                    @error('brand_logo')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Add Brand</button>
-                                </div>
-                            </form>
-                        </div>
+                        @endcan
+                            <div class="mb-3">
+                                <label for="" class="form-label">Brand Name</label>
+                                <input type="text" name="brand_name" class="form-control" id="">
+                                @error('brand_name')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Brand Logo</label>
+                                <input type="file" name="brand_logo" class="form-control" id="">
+                                @error('brand_logo')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Add Brand</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
 
-            @endcan
+
         </div>
     @else
         <h3 class="text-warning"> You don't have to access this page</h3>

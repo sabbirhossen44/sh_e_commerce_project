@@ -22,7 +22,7 @@ class OfferController extends Controller
         $request->validate([
             'title' => 'required',
             'price' => 'required',
-            'discoutn_price' => 'required',
+            'discount_price' => 'required',
             'date' => 'required',
             'image' => 'nullable|image',
         ]);
@@ -42,7 +42,7 @@ class OfferController extends Controller
         $offer1->update([
             'title' => $request->title,
             'price' => $request->price,
-            'discoutn_price' => $request->discoutn_price,
+            'discount_price' => $request->discount_price,
             'date' => $request->date,
             'updated_at' => Carbon::now(),
         ]);

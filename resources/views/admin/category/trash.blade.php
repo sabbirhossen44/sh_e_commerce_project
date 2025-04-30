@@ -55,8 +55,6 @@
                                         <td>{{$category->category_name}}</td>
                                         <td>
                                             @can('category_edit')
-
-
                                                 <a title="Restore" href="{{route('category.restore', $category->id)}}"
                                                     class="btn btn-success btn-icon">
                                                     <i data-feather="rotate-cw"></i>
@@ -76,9 +74,13 @@
                                     </tr>
                                 @endforelse
                             </table>
-                            <button type="submit" name="action" value="restore" class="btn btn-success mt-2">Restore
-                                All</button>
-                            <button type="submit" name="action" value="delete" class="btn btn-danger mt-2">Delete All</button>
+                            @can('category_edit')
+                                <button type="submit" name="action" value="restore" class="btn btn-success mt-2">Restore
+                                    All</button>
+                            @endcan
+                            @can('category_delete')
+                                <button type="submit" name="action" value="delete" class="btn btn-danger mt-2">Delete All</button>
+                            @endcan
                         </div>
                     </div>
                 </form>

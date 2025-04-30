@@ -35,20 +35,26 @@
                                                         <td>{{$subcategory->sub_category}}</td>
                                                         <td>
                                                             @can('subcategory_edit')
-
-
                                                                 <a href="{{route('sub.category.edit', $subcategory->id)}}"
                                                                     class="btn btn-primary btn-icon">
+                                                                    <i data-feather="edit"></i>
+                                                                </a>
+                                                            @else
+                                                                <a title="No Permission" href="" class="btn btn-primary btn-icon">
                                                                     <i data-feather="edit"></i>
                                                                 </a>
                                                             @endcan
                                                             @can('subcategory_delete')
                                                                 <a href="" class="btn btn-danger btn-icon del_btn"
-                                                                    data-link="{{route('sub.category.delete', $subcategory->id)}}">
+                                                                    data-link="{{route('sub.category.delete', $subcategory->id)}}" <i
+                                                                    data-feather="trash"></i>
+                                                                </a>
+                                                            @else
+                                                                <a title="No Permission" href="" class="btn btn-danger btn-icon">
                                                                     <i data-feather="trash"></i>
                                                                 </a>
-
                                                             @endcan
+
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -66,47 +72,49 @@
                     </div>
                 </div>
             </div>
-            @can('subcategory_add')
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Add New Sub Category</h3>
-                        </div>
-                        <div class="card-body">
-                            @if (session('sub_category_store'))
-                                <div class="alert alert-success">{{session('sub_category_store')}}</div>
-                            @endif
-                            @if (session('exist'))
-                                <div class="alert alert-danger mt-2">{{session('exist')}}</div>
-                            @endif
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add New Sub Category</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (session('sub_category_store'))
+                            <div class="alert alert-success">{{session('sub_category_store')}}</div>
+                        @endif
+                        @if (session('exist'))
+                            <div class="alert alert-danger mt-2">{{session('exist')}}</div>
+                        @endif
+                        @can('subcategory_add')
                             <form action="{{route('sub.category.store')}}" method="post">
                                 @csrf
-                                <div class="mb-3">
-                                    <select name="category" id="category_id" class="form-control">
-                                        <option value="">Select Category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="text" class="form-label">SubCategory Name</label>
-                                    <input type="text" name="sub_category" id="" class="form-control">
-                                    @error('sub_category')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Add SubCategory</button>
-                                </div>
-                            </form>
-                        </div>
+                        @endcan
+                            <div class="mb-3">
+                                <select name="category" id="category_id" class="form-control">
+                                    <option value="">Select Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('category')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="text" class="form-label">SubCategory Name</label>
+                                <input type="text" name="sub_category" id="" class="form-control">
+                                @error('sub_category')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Add SubCategory</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            @endcan
+            </div>
+
         </div>
     @else
         <h3 class="text-warning"> You don't have to access this page</h3>

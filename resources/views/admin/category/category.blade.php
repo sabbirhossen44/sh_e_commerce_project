@@ -74,7 +74,7 @@
                 </form>
 
             </div>
-            @can('add_category')
+            
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
@@ -84,8 +84,10 @@
                             @if (session('category_add'))
                                 <div class="alert alert-success">{{session('category_add')}}</div>
                             @endif
+                            @can('add_category')
                             <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @endcan
                                 <div class="mb-3">
                                     <label for="" class="form-label">Category Name</label>
                                     <input type="text" name="category_name" class="form-control" id="">
@@ -108,7 +110,7 @@
                         </div>
                     </div>
                 </div>
-            @endcan
+           
         </div>
     @else
         <h3 class="text-warning"> You don't have to access this page</h3>
