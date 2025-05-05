@@ -26,7 +26,7 @@
                             </tr>
                             @foreach ($products as $sl => $product)
                                 <tr>
-                                    <td>{{$sl + 1}}</td>
+                                    <td> {{$products->firstitem()+$sl}}</td>
                                     <td>{{$product->product_name}}</td>
                                     <td>{{$product->price}}</td>
                                     <td>{{$product->discount}}%</td>
@@ -64,8 +64,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-
                         </table>
+                       <div class="mt-2 ">
+                        {{$products->links()}}
+                       </div>
                     </div>
                 </div>
             </div>

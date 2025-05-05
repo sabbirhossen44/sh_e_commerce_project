@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('style_content')
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css"/>
+@endsection
 @section('content')
     @can('category_access')
         <div class="row">
@@ -44,7 +47,7 @@
                                                     <i class="input-frame"></i></label>
                                             </div>
                                         </td>
-                                        <td>{{$sl + 1}}</td>
+                                        <td>{{$categories->firstitem() + $sl}}</td>
                                         <td>
                                             <img src="{{asset('uploads/category/' . $category->icon)}}" alt="">
                                         </td>
@@ -69,53 +72,61 @@
                             @can('category_delete')
                                 <button type="submit" class="btn btn-danger mt-2">Delete Cheked</button>
                             @endcan
+                            <div class="mt-2 d-flex justify-content-end">
+                                {{$categories->links()}}
+                            </div>
                         </div>
+
                     </div>
                 </form>
 
             </div>
-            
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Add New Category</h3>
-                        </div>
-                        <div class="card-body">
-                            @if (session('category_add'))
-                                <div class="alert alert-success">{{session('category_add')}}</div>
-                            @endif
-                            @can('add_category')
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add New Category</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (session('category_add'))
+                            <div class="alert alert-success">{{session('category_add')}}</div>
+                        @endif
+                        @can('add_category')
                             <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                @endcan
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Category Name</label>
-                                    <input type="text" name="category_name" class="form-control" id="">
-                                    @error('category_name')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Icon</label>
-                                    <input type="file" name="icon" class="form-control" id="">
-                                    @error('icon')
-                                        <strong class="text-danger">{{$message}}</strong>
-                                    @enderror
-                                </div>
+                        @endcan
+                            <div class="mb-3">
+                                <label for="" class="form-label">Category Name</label>
+                                <input type="text" name="category_name" class="form-control" id="">
+                                @error('category_name')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Icon</label>
+                                <input type="file" name="icon" class="form-control" id="">
+                                @error('icon')
+                                    <strong class="text-danger">{{$message}}</strong>
+                                @enderror
+                            </div>
 
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Add Category</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Add Category</button>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
-           
+            </div>
+
         </div>
     @else
         <h3 class="text-warning"> You don't have to access this page</h3>
     @endcan
 
+@endsection
+@section('footer_script')
+    <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
 @endsection
 @section('footer_script')
     <script>

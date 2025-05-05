@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\CustomerEmailVerify;
+use App\Notifications\EmailVerifyNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
 
 class CustomerAuthController extends Controller
@@ -27,13 +30,20 @@ class CustomerAuthController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
             'password_confirmation' => 'required',
         ]);
-        Customer::insert([
+        $customer_info = Customer::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'created_at' => Carbon::now(),
         ]);
+        CustomerEmailVerify::where('customer_id', $customer_info->id)->delete();
+        $info = CustomerEmailVerify::create([
+            'customer_id' => $customer_info->id,
+            'token' => uniqid(),
+            'created_at' => Carbon::now(),
+        ]);
+        Notification::send($customer_info, new EmailVerifyNotification($info));
         // return back()->with('success', 'Customer Registered Successfully!');
         return redirect()->route('customer.login');
     }
@@ -45,7 +55,13 @@ class CustomerAuthController extends Controller
         ]);
         if (Customer::where('email', $request->email)->exists()) {
             if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
-                return redirect()->route('welcome');
+                if (Auth::guard('customer')->user()->email_veryfied_at == null) {
+                    Auth::guard('customer')->logout();
+                    return redirect()->route('customer.login')->with('verify', 'Please Verify your email first');
+                } else {
+                    return redirect()->route('welcome');
+                }
+                
             } else {
                 return back()->with('password_error', 'Wrong Password');
             }
@@ -53,5 +69,4 @@ class CustomerAuthController extends Controller
             return back()->with('exist', 'Email Does Not Exist');
         }
     }
-    
 }

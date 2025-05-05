@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogoController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OfferController;
@@ -12,16 +13,17 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CustomerMiddleware;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FaveiconController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\PassResetController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\CustomerAuthController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -139,11 +141,14 @@ Route::get('/customer/logout/', [CustomerController::class, 'customer_logout'])-
 Route::post('/customer/profile/update', [CustomerController::class, 'customer_profile_update'])->name('customer.profile.update');
 Route::get('/customer/orders', [CustomerController::class, 'my_orders'])->name('my.orders');
 Route::get('/customer/downloa/{id}', [CustomerController::class, 'download_invoice'])->name('download.invoice');
+Route::get('/customer/email/verify/{token}', [CustomerController::class, 'customer_email_verify'])->name('customer.email.verify');
+Route::get('/reset/email/verify', [CustomerController::class, 'reset_email_verify'])->name('reset.email.verify');
+Route::post('/reset/email/link/send', [CustomerController::class, 'reset_email_link_send'])->name('reset.email.link.send');
 
 // cart
 Route::Post('/cart/add', [CartController::class, 'add_cart'])->name('add.cart');
 Route::get('/cart/remove/{id}', [CartController::class, 'cart_remove'])->name('cart.remove');
-Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::get('/cart', [CartController::class, 'cart'])->middleware(CustomerMiddleware::class)->name('cart');
 Route::Post('/cart/update', [CartController::class, 'cart_update'])->name('cart.update');
 
 // coupon
@@ -207,3 +212,10 @@ Route::get('/user/role/delete/{id}', [RoleController::class, 'user_role_delete']
 Route::get('/role/edit/{id}', [RoleController::class, 'role_edit'])->name('role.edit');
 Route::post('/role/update/{id}', [RoleController::class, 'role_update'])->name('role.update');
 Route::post('/assign/role', [RoleController::class, 'assign_role'])->name('assign.role');
+
+
+// customer forget password
+Route::get('/forget/password', [PassResetController::class, 'forget_password'])->name('forget.password');
+Route::post('/password/reset/req', [PassResetController::class, 'pass_reset_req'])->name('pass.reset.req');
+Route::get('/password/reset/form/{token}', [PassResetController::class, 'password_reset_form'])->name('password.reset.form');
+Route::post('/password/reset/confirm/{token}', [PassResetController::class, 'password_reset_confirm'])->name('password.reset.confirm');

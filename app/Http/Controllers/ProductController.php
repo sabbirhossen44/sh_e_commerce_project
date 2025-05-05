@@ -93,7 +93,7 @@ class ProductController extends Controller
     }
     public function product_list()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return view('admin.product.list', [
             'products' => $products,
         ]);

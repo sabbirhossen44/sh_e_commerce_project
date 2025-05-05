@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wpocean.com/html/tf/themart/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:28 GMT -->
+<!-- Mirrored from wpocean.com/html/tf/themart/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:45 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -53,14 +53,15 @@
         </div>
         <!-- end preloader -->
 
-        <div class="wpo-login-area">
+        <!-- login-area start -->
+        <div class="tp-login-area">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST">
+                        <form class="tp-accountWrapper" action="{{route('reset.email.link.send')}}" method="post">
                             @csrf
-                            <div class="wpo-accountInfo">
-                                <div class="wpo-accountInfoHeader">
+                            <div class="tp-accountInfo">
+                                <div class="tp-accountInfoHeader">
                                     @php
                                         $logo = App\Models\Logo::where('status', 1)->first();
                                     @endphp
@@ -72,100 +73,60 @@
                                                 src="{{asset('frontend')}}/images/logo-2.svg" alt="logo"></a>
                                     @endif
                                     {{-- <a href="index.html"><img src="{{asset('frontend/')}}/images/logo-2.svg"
-                                            alt=""></a> --}}
-                                    <a class="wpo-accountBtn" href="{{route('customer.register')}}">
-                                        <span class="">Create Account</span>
+                                            alt=""> </a> --}}
+                                    {{-- <a class="tp-accountBtn" href="{{route('customer.register')}}">
+                                        <span class="">Create Account</span> --}}
                                     </a>
                                 </div>
                                 <div class="image">
                                     <img src="{{asset('frontend/')}}/images/login.svg" alt="">
                                 </div>
                                 <div class="back-home">
-                                    <a class="wpo-accountBtn" href="{{route('welcome')}}">
+                                    <a class="tp-accountBtn" href="{{route('welcome')}}">
                                         <span class="">Back To Home</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="wpo-accountForm form-style">
+                            <div class="tp-accountForm form-style">
                                 <div class="fromTitle">
-                                    <h2>Login</h2>
+                                    <h2>Resend Email Verification Link</h2>
                                     <p>Sign into your pages account</p>
-                                    @if (session('reset'))
-                                        <div class="alert alert-success">{{session('reset')}}</div>
-                                    @endif
-                                    @if (session('email_verify'))
-                                        <div class="alert alert-success">{{session('email_verify')}}</div>
-                                    @endif
-                                    @if (session('verify'))
-                                        <div class="alert alert-danger d-flex justify-content-between">
-                                            <span>{{session('verify')}}</span>
-                                            <a href="{{route('reset.email.verify')}}" class="">Resend Verification</a>
-                                        </div>
+                                    @if (session('success'))
+                                        <div class="alert alert-success">{{session('success')}}</div>
                                     @endif
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <label>Email</label>
-                                        <input type="email" id="email" name="email">
+                                        <input type="text" id="email" name="email" placeholder="demo@gmail.com">
                                         @error('email')
-                                            <span class="text-danger">{{$message}}</span>
+                                            <strong class="text-danger">{{$message}}</strong>
                                         @enderror
-                                        @if (session('exist'))
-                                            <span class="text-danger">{{session('exist')}}</span>
+                                        @if (session('notexist'))
+                                            <strong class="text-danger">{{session('notexist')}}</strong>
                                         @endif
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-12">
-                                        <div class="form-group">
-                                            <label>Password</label>
-                                            <input class="pwd6" type="password" name="password">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default reveal6" type="button"><i
-                                                        class="ti-eye"></i></button>
-                                            </span>
-                                            @error('password')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                            @if (session('password_error'))
-                                            <span class="text-danger">{{session('password_error')}}</span>
-                                        @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <div class="check-box-wrap">
-                                            <div class="forget-btn">
-                                                <a href="{{route('forget.password')}}">Forgot Password?</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <button type="submit" class="wpo-accountBtn">Login</button>
+                                        <button type="submit" class="tp-accountBtn">Resend Email Verification Link</button>
                                     </div>
                                 </div>
-                                <h4 class="or"><span>OR</span></h4>
-                                <ul class="wpo-socialLoginBtn">
-                                    <li><button class="bg-danger" tabindex="0" type="button"><span><i
-                                                    class="ti-google"></i></span></button></li>
-                                    <li>
-                                        <button class="bg-secondary" tabindex="0" type="button"><span><i
-                                                    class="ti-github"></i></span></button>
-                                    </li>
-                                </ul>
-                                <p class="subText">Don't have an account? <a
+
+                                {{-- <p class="subText">Don't have an account? <a
                                         href="{{route('customer.register')}}">Create free
-                                        account</a></p>
+                                        account</a></p> --}}
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- login-area end -->
 
 
     </div>
     <!-- end of page-wrapper -->
 
     <!-- All JavaScript files
-        
     ================================================== -->
     <script src="{{asset('frontend/')}}/js/jquery.min.js"></script>
     <script src="{{asset('frontend/')}}/js/bootstrap.bundle.min.js"></script>
@@ -178,6 +139,6 @@
 </body>
 
 
-<!-- Mirrored from wpocean.com/html/tf/themart/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:29 GMT -->
+<!-- Mirrored from wpocean.com/html/tf/themart/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:45 GMT -->
 
 </html>

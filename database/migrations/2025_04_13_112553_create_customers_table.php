@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->integer('zip')->nullable();
             $table->string('address')->nullable();
+            $table->date('email_veryfied_at')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
         });
