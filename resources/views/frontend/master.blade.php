@@ -296,11 +296,11 @@
                                     <button class="menu-close"><i class="ti-close"></i></button>
                                     <ul class="nav navbar-nav mb-2 mb-lg-0">
                                         <li class="menu-item-has-children">
-                                            <a href="#">Home</a>
+                                            <a href="{{route('welcome')}}">Home</a>
                                         </li>
                                         <li><a href="about.html">About</a></li>
                                         <li class="menu-item-has-children">
-                                            <a href="#">Shop</a>
+                                            <a href="{{route('shop')}}">Shop</a>
                                         </li>
                                         <li class="menu-item-has-children">
                                             <a href="#">FAQ</a>

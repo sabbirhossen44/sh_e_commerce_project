@@ -130,6 +130,7 @@ Route::get('/subscribe/list', [HomeController::class, 'Subscriber_list'])->name(
 Route::get('product/details/{slug}', [FrontendController::class, 'product_details'])->name('product.details');
 Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getQuantity', [FrontendController::class, 'getQuantity']);
+Route::get('/shop', [FrontendController::class , 'shop'])->name('shop');
 
 // customer
 Route::get('/customer/login', [CustomerAuthController::class, 'customer_login'])->name('customer.login');

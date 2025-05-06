@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Color;
 use App\Models\Inventory;
 use App\Models\Offer1;
 use App\Models\Offer2;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductGallery;
+use App\Models\size;
 use App\Models\Subscribe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -98,5 +100,19 @@ class FrontendController extends Controller
             $str =' <li><span id="quan" class="btn btn-success text-white">'.$quantity.' In Stock</span></li>';
         }
         echo $str;
+    }
+    public function shop(){
+        $products = Product::where('status', 1)->get();
+        $categoris = Category::all();
+        $colors = Color::all();
+        $sizes = size::all();
+        $new_products = Product::latest()->where('status', 1)->take(3)->get();
+        return view('frontend.shop',[
+            'products' => $products,
+            'new_products' => $new_products,
+            'categoris' => $categoris,
+            'colors' => $colors,
+            'sizes' => $sizes,
+        ]);
     }
 }
