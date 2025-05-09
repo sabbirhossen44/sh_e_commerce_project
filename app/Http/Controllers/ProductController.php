@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Inventory;
+use App\Models\Tag;
 
 class ProductController extends Controller
 {
@@ -20,10 +21,12 @@ class ProductController extends Controller
         $categories = Category::all();
         $sub_categories = Subcategory::all();
         $brands = Brand::all();
+        $tags = Tag::all();
         return view('admin.product.index', [
             'categories' => $categories,
             'sub_categories' => $sub_categories,
             'brands' => $brands,
+            'tags' => $tags,
         ]);
     }
     public function getsubcategory(Request $request)

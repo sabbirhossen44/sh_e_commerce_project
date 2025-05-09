@@ -124,6 +124,12 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{route('tag')}}">
+                            <i class="link-icon" data-feather="tag"></i>
+                            <span class="link-title">Tags</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{route('coupon')}}">
                             <i class="link-icon" data-feather="inbox"></i>
                             <span class="link-title">Coupon</span>

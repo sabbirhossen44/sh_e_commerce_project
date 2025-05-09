@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
@@ -131,6 +132,11 @@ Route::get('product/details/{slug}', [FrontendController::class, 'product_detail
 Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getQuantity', [FrontendController::class, 'getQuantity']);
 Route::get('/shop', [FrontendController::class , 'shop'])->name('shop');
+Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
+Route::get('/about', [FrontendController::class, 'about'])->name('about');
+Route::get('/faq', [FrontendController::class, 'faq'])->name('faq');
+Route::get('/compare', [FrontendController::class, 'compare'])->name('compare');
+Route::get('/recent_view', [FrontendController::class, 'recent_view'])->name('recent_view');
 
 // customer
 Route::get('/customer/login', [CustomerAuthController::class, 'customer_login'])->name('customer.login');
@@ -145,6 +151,10 @@ Route::get('/customer/downloa/{id}', [CustomerController::class, 'download_invoi
 Route::get('/customer/email/verify/{token}', [CustomerController::class, 'customer_email_verify'])->name('customer.email.verify');
 Route::get('/reset/email/verify', [CustomerController::class, 'reset_email_verify'])->name('reset.email.verify');
 Route::post('/reset/email/link/send', [CustomerController::class, 'reset_email_link_send'])->name('reset.email.link.send');
+
+// tag
+Route::get('/tag', [TagController::class, 'tag'])->name('tag');
+Route::post('/tag/store', [TagController::class, 'tag_store'])->name('tag.store');
 
 // cart
 Route::Post('/cart/add', [CartController::class, 'add_cart'])->name('add.cart');

@@ -173,7 +173,7 @@
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label for="text" class="form-label">Tags</label>
-                                    <input type="text" name="tags[]" class="form-control border-0 p-0" id="input-tags"
+                                    <input type="text"  name="tags[]" class="form-control border-0 p-0" id="input-tags"
                                         value="{{$product->tags}}">
                                     @error('tags')
                                         <strong class="text-danger">{{$message}}</strong>

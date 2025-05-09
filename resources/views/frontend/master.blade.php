@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <form action="#" class="middle-box">
+                            <div class="middle-box">
                                 <div class="category">
                                     <select name="service" class="form-control">
                                         <option disabled="disabled" selected="">All Category</option>
@@ -129,18 +129,18 @@
                                 </div>
                                 <div class="search-box">
                                     <div class="input-group">
-                                        <input type="search" class="form-control"
-                                            placeholder="What are you looking for?">
+                                        <input type="search" class="form-control" id="search_input" name="search_input"
+                                            placeholder="What are you looking for?" value="{{@$_GET['search_input']}}">
                                         <button class="search-btn" type="submit"> <i class="fi flaticon-search"></i>
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="col-lg-4 col-12">
                             <div class="middle-right">
                                 <ul>
-                                    <li><a href="compare.html"><i class="fi flaticon-right-and-left"></i><span>Compare</span></a>
+                                    <li><a href="{{route('compare')}}"><i class="fi flaticon-right-and-left"></i><span>Compare</span></a>
                                     </li>
                                     <li>
                                         @auth('customer')
@@ -298,21 +298,21 @@
                                         <li class="menu-item-has-children">
                                             <a href="{{route('welcome')}}">Home</a>
                                         </li>
-                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="{{route('about')}}">About</a></li>
                                         <li class="menu-item-has-children">
                                             <a href="{{route('shop')}}">Shop</a>
                                         </li>
                                         <li class="menu-item-has-children">
-                                            <a href="#">FAQ</a>
+                                            <a href="{{route('faq')}}">FAQ</a>
                                         </li>
-                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="{{route('contact')}}">Contact</a></li>
                                     </ul>
 
                                 </div><!-- end of nav-collapse -->
                             </div>
                             <div class="col-lg-2 col-md-1 col-1">
                                 <div class="header-right">
-                                    <a href="recent-view.html" class="recent-btn"><i class="fi flaticon-refresh"></i> 
+                                    <a href="{{route('recent_view')}}" class="recent-btn"><i class="fi flaticon-refresh"></i> 
                                         <span>Recently Viewed</span>
                                     </a>
                                 </div>
@@ -476,6 +476,77 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Custom script for this template -->
     <script src="{{asset('frontend')}}/js/script.js"></script>
+    <script>
+        $('.search-btn').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.category').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.color').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.sort').change(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.price_filter').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.search_btn2').click(function (e) {
+            e.preventDefault();
+            var search_input2 = $('#search_input2').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input2;
+            window.location.href = link;
+        })
+
+        $('.tag').click(function (e) {
+            e.preventDefault();
+            var tag = $(this).val();
+            var link = "{{route('shop')}}" + "?tag=" + tag;
+            window.location.href = link;
+        })
+    </script>
     @yield('footer_scrtipt')
+    
 </body>
 </html>
