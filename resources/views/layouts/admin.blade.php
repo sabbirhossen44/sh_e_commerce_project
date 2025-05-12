@@ -6,7 +6,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sabbir Hossen</title>
+    {{-- <title>Sabbir Hossen</title> --}}
+    <title>
+        @foreach (Request::segments() as $segment)
+        Sabbir-SH Shop: {{ucwords($segment)}}
+        @endforeach
+    </title>
     <!-- core:css -->
     <link rel="stylesheet" href="{{asset('backend')}}/assets/vendors/core/core.css">
     <!-- endinject -->
@@ -142,14 +147,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  href="{{route('order.cancel.lists')}}">
+                        <a class="nav-link" href="{{route('order.cancel.lists')}}">
                             <i class="link-icon" data-feather="layout"></i>
                             <span class="link-title">Order Cancel List</span>
                         </a>
-                        
+
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('role.manage')}}" >
+                        <a class="nav-link" href="{{route('role.manage')}}">
                             <i class="link-icon" data-feather="smile"></i>
                             <span class="link-title">Roll Manager</span>
                             {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
@@ -181,11 +186,10 @@
                             <span class="link-title">Subscriber List</span>
                         </a>
                     </li>
-                    <li class="nav-item nav-category">Docs</li>
                     <li class="nav-item">
-                        <a href="https://www.nobleui.com/html/documentation/docs.html" target="_blank" class="nav-link">
+                        <a href="{{route('faq.index')}}" class="nav-link">
                             <i class="link-icon" data-feather="hash"></i>
-                            <span class="link-title">Documentation</span>
+                            <span class="link-title">FAQ</span>
                         </a>
                     </li>
                 </ul>
@@ -392,28 +396,30 @@
                                 </div>
                                 <div class="dropdown-body">
                                     @foreach (App\Models\Order::latest()->take(1)->get() as $order)
-                                        <a href="{{route('orders')}}" class="dropdown-item">
-                                            <div class="icon">
-                                                <i data-feather="user-plus"></i>
-                                            </div>
-                                            <div class="content">
-                                                <p>New Order</p>
-                                                <p>Order ID: {{$order->order_id}}</p>
-                                                <p class="sub-text text-muted">{{$order->created_at->diffForHumans()}}</p>
-                                            </div>
-                                        </a>
+                                    <a href="{{route('orders')}}" class="dropdown-item">
+                                        <div class="icon">
+                                            <i data-feather="user-plus"></i>
+                                        </div>
+                                        <div class="content">
+                                            <p>New Order</p>
+                                            <p>Order ID: {{$order->order_id}}</p>
+                                            <p class="sub-text text-muted">{{$order->created_at->diffForHumans()}}</p>
+                                        </div>
+                                    </a>
                                     @endforeach
                                     @foreach (App\Models\OrderCancel::latest()->take(1)->get() as $orderCancel)
-                                        <a href="{{route('order.cancel.lists')}}" class="dropdown-item">
-                                            <div class="icon">
-                                                <i data-feather="user-plus"></i>
-                                            </div>
-                                            <div class="content">
-                                                <p>Order Cancel Request</p>
-                                                <p>Order ID: {{App\Models\Order::find($orderCancel->order_id)->order_id}}</p>
-                                                <p class="sub-text text-muted">{{$orderCancel->created_at->diffForHumans()}}</p>
-                                            </div>
-                                        </a>
+                                    <a href="{{route('order.cancel.lists')}}" class="dropdown-item">
+                                        <div class="icon">
+                                            <i data-feather="user-plus"></i>
+                                        </div>
+                                        <div class="content">
+                                            <p>Order Cancel Request</p>
+                                            <p>Order ID: {{App\Models\Order::find($orderCancel->order_id)->order_id}}
+                                            </p>
+                                            <p class="sub-text text-muted">{{$orderCancel->created_at->diffForHumans()}}
+                                            </p>
+                                        </div>
+                                    </a>
                                     @endforeach
 
                                     {{-- <a href="javascript:;" class="dropdown-item">
@@ -462,18 +468,18 @@
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if (Auth::user()->photo)
-                                    <img src="{{ asset('uploads/user/' . Auth::user()->photo) }}" alt="User Image">
+                                <img src="{{ asset('uploads/user/' . Auth::user()->photo) }}" alt="User Image">
                                 @else
-                                    <img src="{{ Avatar::create(Auth::user()->name)->toBase64()}}" />
+                                <img src="{{ Avatar::create(Auth::user()->name)->toBase64()}}" />
                                 @endif
                             </a>
                             <div class="dropdown-menu" aria-labelledby="profileDropdown">
                                 <div class="dropdown-header d-flex flex-column align-items-center">
                                     <div class="mb-3 figure">
                                         @if (Auth::user()->photo)
-                                            <img src="{{ asset('uploads/user/' . Auth::user()->photo) }}" alt="User Image">
+                                        <img src="{{ asset('uploads/user/' . Auth::user()->photo) }}" alt="User Image">
                                         @else
-                                            <img src="{{ Avatar::create(Auth::user()->name)->toBase64()}}" />
+                                        <img src="{{ Avatar::create(Auth::user()->name)->toBase64()}}" />
                                         @endif
                                     </div>
                                     <div class="text-center info">
@@ -514,8 +520,11 @@
                 <div class="flex-wrap d-flex justify-content-between align-items-center grid-margin">
                     <div class="page-breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Home</li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                            @foreach (Request::segments() as $segment)
+                            <li class="breadcrumb-item active" aria-current="page">{{ucwords($segment)}}</li>
+                            @endforeach
+                            {{-- <li class="breadcrumb-item active" aria-current="page">Home</li> --}}
                         </ol>
                     </div>
                     <div class="flex-wrap d-flex align-items-center text-nowrap">
@@ -581,6 +590,7 @@
     <script src="{{asset('backend')}}/assets/js/dashboard.js"></script>
     <script src="{{asset('backend')}}/assets/js/datepicker.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- end custom js for this page -->
     @yield('footer_script')
 </body>

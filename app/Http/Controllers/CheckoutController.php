@@ -82,6 +82,7 @@ class CheckoutController extends Controller
                 'discoutn' => $request->discount,
                 'charge' => $request->charge,
                 'payment_method' => $request->payment_method,
+                'order_date' => Carbon::now()->format('Y-m-d'),
                 'created_at' => Carbon::now(),
             ]);
             Billing::insert([

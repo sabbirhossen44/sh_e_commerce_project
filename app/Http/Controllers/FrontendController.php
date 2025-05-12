@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\Faq;
 use App\Models\Inventory;
 use App\Models\Offer1;
 use App\Models\Offer2;
@@ -16,8 +17,10 @@ use App\Models\size;
 use App\Models\Subscribe;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class FrontendController extends Controller
 {
@@ -59,6 +62,17 @@ class FrontendController extends Controller
         $total_reviews = OrderProduct::where('product_id', $product_id)->whereNotNull('review')->count();
         $total_star = OrderProduct::where('product_id', $product_id)->whereNotNull('review')->sum('star');
         // return $reviews;
+        // resent view
+
+        $all = Cookie::get('recent_view');
+        if (!$all) {
+            $all = "[]";
+        }
+        $all_info = json_decode($all, true);
+        $all_info = Arr::prepend($all_info, $product_id);
+        $recend_product_id = json_encode($all_info);
+        Cookie::queue('recent_view', $recend_product_id, 1000);
+        // return $all_info;
         return view('frontend.product_details', [
             'product_info' => $product_info,
             'gallery' => $gallery,
@@ -201,7 +215,10 @@ class FrontendController extends Controller
     }
     public function faq()
     {
-        return view('frontend.faq');
+        $faqs = Faq::all();
+        return view('frontend.faq',[
+            'faqs' => $faqs,
+        ]);
     }
     public function compare()
     {
@@ -209,6 +226,18 @@ class FrontendController extends Controller
     }
     public function recent_view()
     {
-        return view('frontend.recent_view');
+        $recent_info = json_decode(Cookie::get('recent_view'), true);
+        
+        if ($recent_info == NULL) {
+            $recent_viewed_product = [];
+            // $recent_viewed = array_unique($recent_info);
+            $recent_viewed = [];
+        }else{
+            $recent_viewed = array_reverse(array_unique($recent_info));
+        }
+        $recents = Product::find($recent_viewed);
+        return view('frontend.recent_view',[
+            'recents' => $recents,
+        ]);
     }
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\PassResetController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -50,6 +51,7 @@ Route::post('/user/photo/update', [UserController::class, 'user_photo_update'])-
 Route::post('/user/list', [HomeController::class, 'user_add'])->name('user.add');
 Route::get('/user/list', [HomeController::class, 'user_list'])->name('user.list');
 Route::get('/user/delete/{user_id}', [HomeController::class, 'user_delete'])->name('user.delete');
+// Route::get('/admin/faq', [HomeController::class, 'admin_faq'])->name('admin.faq');
 
 // category
 Route::get('/category', [CategoryController::class, 'category'])->name('category');
@@ -230,3 +232,15 @@ Route::get('/forget/password', [PassResetController::class, 'forget_password'])-
 Route::post('/password/reset/req', [PassResetController::class, 'pass_reset_req'])->name('pass.reset.req');
 Route::get('/password/reset/form/{token}', [PassResetController::class, 'password_reset_form'])->name('password.reset.form');
 Route::post('/password/reset/confirm/{token}', [PassResetController::class, 'password_reset_confirm'])->name('password.reset.confirm');
+
+// Captcha
+
+// Route::post('my-captcha', 'HomeController@myCaptchaPost')->name('myCaptcha.post');
+
+// Route::get('/refresh_captcha', CustomerAuthController::class, 'refreshCaptcha')->name('refresh_captcha');
+Route::get('/refresh_captcha', [CustomerAuthController::class, 'refreshCaptcha'])->name('refresh_captcha');
+
+
+
+// faq
+Route::resource('admin/faq', FaqController::class);

@@ -161,6 +161,7 @@ class StripePaymentController extends Controller
             'discoutn' => $data->discount,
             'charge' => $data->charge,
             'payment_method' => $data->payment_method,
+            'order_date' => Carbon::now()->format('Y-m-d'),
             'created_at' => Carbon::now(),
         ]);
         Billing::insert([

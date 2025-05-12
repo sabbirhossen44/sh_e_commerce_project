@@ -33,6 +33,7 @@
     <link href="{{asset('frontend/')}}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{asset('frontend/')}}/css/odometer-theme-default.css" rel="stylesheet">
     <link href="{{asset('frontend/')}}/sass/style.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
 </head>
 
 <body>
@@ -57,7 +58,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST">
+                        <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST"
+                            id="contactUSForm">
                             @csrf
                             <div class="wpo-accountInfo">
                                 <div class="wpo-accountInfoHeader">
@@ -126,10 +128,52 @@
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                             @if (session('password_error'))
-                                            <span class="text-danger">{{session('password_error')}}</span>
-                                        @endif
+                                                <span class="text-danger">{{session('password_error')}}</span>
+                                            @endif
+                                            {{-- @if ($errors->has('g-recaptcha-response'))
+                                            <span class="text-danger">{{ $errors->first('g-recaptcha-response')
+                                                }}</span>
+                                            @endif --}}
                                         </div>
                                     </div>
+                                    {{-- <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
+
+                                            <label for="password" class="col-md-4 control-label">Captcha</label>
+
+
+
+                                            <div class="col-md-12">
+
+                                                <div class="captcha w-100 d-flex justify-content-between">
+
+                                                    <span>{!! captcha_img() !!}</span>
+
+                                                    <button type="button" class="btn btn-success btn-refresh"><i
+                                                            class="fa fa-refresh"></i></button>
+
+                                                </div>
+
+                                                <input id="captcha" type="text" class="form-control mt-3"
+                                                    placeholder="Enter Captcha" name="captcha">
+
+
+
+                                                @if ($errors->has('captcha'))
+
+                                                    <span class="help-block">
+
+                                                        <strong>{{ $errors->first('captcha') }}</strong>
+
+                                                    </span>
+
+                                                @endif
+
+                                            </div>
+
+                                        </div>
+                                    </div> --}}
+
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="check-box-wrap">
                                             <div class="forget-btn">
@@ -175,6 +219,18 @@
     <script src="{{asset('frontend/')}}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
     <script src="{{asset('frontend/')}}/js/script.js"></script>
+    <script type="text/javascript">
+        $('#contactUSForm').submit(function (event) {
+            event.preventDefault();
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", { action: 'subscribe_newsletter' }).then(function (token) {
+                    $('#contactUSForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                    $('#contactUSForm').unbind('submit').submit();
+                });;
+            });
+        });
+    </script>
 </body>
 
 

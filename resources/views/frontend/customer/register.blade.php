@@ -32,7 +32,14 @@
     <link href="{{asset('frontend/')}}/css/owl.transitions.css" rel="stylesheet">
     <link href="{{asset('frontend/')}}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{asset('frontend/')}}/css/odometer-theme-default.css" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" > --}}
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    {{-- <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
     <link href="{{asset('frontend/')}}/sass/style.css" rel="stylesheet">
+
+    
 </head>
 
 <body>
@@ -118,7 +125,7 @@
                                         <div class="form-group">
                                             <label>Password</label>
                                             <input class="pwd2" type="password" placeholder="Your password here.."
-                                                 name="password">
+                                                name="password">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default reveal3" type="button"><i
                                                         class="ti-eye"></i></button>
@@ -132,7 +139,7 @@
                                         <div class="form-group">
                                             <label>Confirm Password</label>
                                             <input class="pwd3" type="password" placeholder="Your password here.."
-                                                 name="password_confirmation">
+                                                name="password_confirmation">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default reveal2" type="button"><i
                                                         class="ti-eye"></i></button>
@@ -142,6 +149,41 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    {{-- <div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
+
+                                        <label for="password" class="col-md-4 control-label">Captcha</label>
+
+
+
+                                        <div class="col-md-12">
+
+                                            <div class="captcha w-100 d-flex justify-content-between">
+
+                                                <span>{!! captcha_img() !!}</span>
+
+                                                <button type="button" class="btn btn-success btn-refresh"><i
+                                                        class="fa fa-refresh"></i></button>
+
+                                            </div>
+
+                                            <input id="captcha" type="text" class="form-control mt-3"
+                                                placeholder="Enter Captcha" name="captcha">
+
+
+
+                                            @if ($errors->has('captcha'))
+
+                                                <span class="help-block">
+
+                                                    <strong>{{ $errors->first('captcha') }}</strong>
+
+                                                </span>
+
+                                            @endif
+
+                                        </div>
+
+                                    </div> --}}
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <button type="submit" class="wpo-accountBtn">Signup</button>
                                     </div>
@@ -170,6 +212,26 @@
     <script src="{{asset('frontend/')}}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
     <script src="{{asset('frontend/')}}/js/script.js"></script>
+    <script>
+
+        $(".btn-refresh").click(function () {
+
+            $.ajax({
+
+                type: 'GET',
+
+                url: '/refresh_captcha',
+
+                success: function (data) {
+
+                    $(".captcha span").html(data.captcha);
+
+                }
+
+            });
+
+        });
+    </script>
 </body>
 
 

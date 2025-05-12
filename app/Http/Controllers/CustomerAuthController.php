@@ -11,6 +11,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Http\RedirectResponse;
+use App\Rules\ReCaptcha;
 
 class CustomerAuthController extends Controller
 {
@@ -29,7 +31,10 @@ class CustomerAuthController extends Controller
             'email' => 'required|email|unique:customers',
             'password' => ['required', 'confirmed', Password::min(8)],
             'password_confirmation' => 'required',
+            //  'captcha' => 'required|captcha'
         ]);
+        
+        
         $customer_info = Customer::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
@@ -47,11 +52,22 @@ class CustomerAuthController extends Controller
         // return back()->with('success', 'Customer Registered Successfully!');
         return redirect()->route('customer.login');
     }
+     public function refreshCaptcha()
+
+    {
+
+        return response()->json(['captcha'=> captcha_img()]);
+
+    }
     public function customer_logged(Request $request)
     {
         $request->validate([
             'email' => 'required',
             'password' => 'required',
+            // 'g-recaptcha-response' => ['required', new ReCaptcha]
+            // 'captcha' => 'required|captcha'
+            // 'captcha' => 'required|captcha'
+
         ]);
         if (Customer::where('email', $request->email)->exists()) {
             if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
