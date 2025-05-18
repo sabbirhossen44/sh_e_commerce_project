@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Log;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +30,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Log::insert([
+            'user_id' => Auth::id(),
+            'model' => 'User',
+            'action' => 'user Login',
+            'data' => Auth::user()->name,
+            'created_at' => Carbon::now(),
+        ]);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
@@ -36,12 +46,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Log::insert([
+            'user_id' => Auth::id(),
+            'model' => 'User',
+            'action' => 'user Logout',
+            'data' => Auth::user()->name,
+            'created_at' => Carbon::now(),
+        ]);
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

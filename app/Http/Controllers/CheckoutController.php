@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail;
+use App\Models\Product;
 
 class CheckoutController extends Controller
 {
@@ -143,6 +144,7 @@ class CheckoutController extends Controller
                 ]);
                 Cart::find($cart->id)->delete();
                 Inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quentity', $cart->quantity);
+                Product::where('id', $cart->product_id)->increment('sold_count', $cart->quantity);
             }
             Mail::to($request->email)->send(new InvoiceMail($order_id));
             return redirect()->route('order.success')->with('success', $order_id);

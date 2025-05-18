@@ -67,10 +67,10 @@
                                     <div class="priceFilterSlider">
                                         <form class="clearfix">
                                             <!-- <div id="sliderRange"></div>
-                                                                                <div class="pfsWrap">
-                                                                                    <label>Price:</label>
-                                                                                    <span id="amount"></span>
-                                                                                </div> -->
+                                                                                    <div class="pfsWrap">
+                                                                                        <label>Price:</label>
+                                                                                        <span id="amount"></span>
+                                                                                    </div> -->
                                             <div class="d-flex">
                                                 <div class="col-lg-6 pe-2">
                                                     <label for="" class="form-label">Min</label>
@@ -308,5 +308,63 @@
     <!-- product-area-end -->
 @endsection
 @section('footer_scrtipt')
-    
+    <script>
+        $('.category').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.color').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.sort').change(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.price_filter').click(function () {
+            var search_input = $('#search_input').val();
+            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var sort = $('.sort').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+            window.location.href = link;
+        })
+
+        $('.search_btn2').click(function (e) {
+            e.preventDefault();
+            var search_input2 = $('#search_input2').val();
+            var link = "{{route('shop')}}" + "?search_input=" + search_input2;
+            window.location.href = link;
+        })
+
+        $('.tag').click(function (e) {
+            e.preventDefault();
+            var tag = $(this).val();
+            var link = "{{route('shop')}}" + "?tag=" + tag;
+            window.location.href = link;
+        })
+    </script>
 @endsection

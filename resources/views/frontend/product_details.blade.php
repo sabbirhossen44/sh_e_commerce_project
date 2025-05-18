@@ -107,7 +107,7 @@
 
                                         @auth('customer')
                                             {{-- <a href="{{route('add.cart')}}" class="theme-btn-s2">Add to cart</a> --}}
-                                            <button type="submit" class="theme-btn-s2">Add to cart</button>
+                                            <button type="submit" class="theme-btn-s2" id="add_to_cart_btn">Add to cart</button>
                                         @else
                                             <a href="{{route('customer.login')}}" class="theme-btn-s2">Add to cart</a>
                                         @endauth
@@ -123,7 +123,9 @@
                                         @endphp
                                         <li><span>Tags:
                                                 @foreach ($after_explode as $tags)
-                                                    <a href="" class="badge bg-warning text-dark">{{App\Models\Tag::find($tags)->tag_name}}</a>
+                                                    {{-- <a href="" ></a> --}}
+                                                    
+                                                    <button class="btn badge bg-warning text-dark tags_button" value="{{App\Models\Tag::find($tags)->id}} ">{{App\Models\Tag::find($tags)->tag_name}}</button>
                                                 @endforeach
                                             </span>
                                         </li>
@@ -352,8 +354,22 @@
                             type: 'POST',
                             url: '/getQuantity',
                             data: { 'color_id': color_id, 'product_id': product_id, 'size_id': size_id },
-                            success: function (data) {
-                                $('#quan').html(data);
+                            // success: function (data) {
+                            //     $('#quan').html(data);
+                            //     if ($quantity == 0) {
+                            //         $('#add_to_cart_btn').attr('disabled', true).text('Out of Stock').css('background', '#ccc');
+                            //     } else {
+                            //          $('#add_to_cart_btn').attr('disabled', false).text('Add to Cart').css('background', '');
+                            //     }
+                            // }
+                            success: function (res) {
+                                if (res.quantity == 0) {
+                                    $('#add_to_cart_btn').attr('disabled', true).text('Out of Stock').css('background', '#ccc');
+                                    $('#quan').html(res.str);
+                                } else {
+                                    $('#add_to_cart_btn').attr('disabled', false).text('Add to Cart').css('background', '');
+                                    $('#quan').html(res.str);
+                                }
                             }
                         });
 
@@ -362,7 +378,13 @@
 
 
             })
-        })
+        });
+        $('.tags_button').click(function(e){
+            e.preventDefault();
+            var tag_button_id = $(this).val();
+            var link = "{{route('shop')}}" + '?tag=' + tag_button_id;
+            window.location.href = link;
+        });
     </script>
 
     @if (session('success'))

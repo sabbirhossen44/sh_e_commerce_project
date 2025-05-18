@@ -37,6 +37,7 @@
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Update Category</button>
+                                <a href="{{route('category')}}" class="btn btn-secondary">Back</a>
                             </div>
                         </form>
                     </div>

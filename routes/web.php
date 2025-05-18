@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
@@ -112,6 +113,13 @@ Route::get('/logo', [LogoController::class, 'logo'])->name('logo');
 Route::post('/logo/store', [LogoController::class, 'logo_store'])->name('logo.store');
 Route::get('/logo/delete/{id}', [LogoController::class, 'logo_delete'])->name('logo.delete');
 Route::post('/getstatus-logo', [LogoController::class, 'getstatus_logo']);
+
+// web Information
+Route::post('/web/information/store', [LogoController::class, 'web_information_store'])->name('webinformation.store');
+Route::post('/getstatus/webinfo', [LogoController::class, 'getstatus_webinfo']);
+Route::get('/webInfo/view/{id}', [LogoController::class, 'webInfo_view'])->name('webInfo.view');
+Route::get('/webInfo/edit/{id}', [LogoController::class, 'webInfo_edit'])->name('webInfo.edit');
+Route::post('/webInfo/update/{id}', [LogoController::class, 'webinfo_update'])->name('webinfo.update');
 
 // faveicon
 Route::post('/faveicon/store', [FaveiconController::class, 'faveicon_store'])->name('faveicon.store');
@@ -244,3 +252,6 @@ Route::get('/refresh_captcha', [CustomerAuthController::class, 'refreshCaptcha']
 
 // faq
 Route::resource('admin/faq', FaqController::class);
+
+// customer auth
+Route::resource('customer/log', LogController::class);

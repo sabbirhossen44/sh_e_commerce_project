@@ -14,6 +14,9 @@ class Product extends Model
         return $this->belongsTo(Tag::class, 'tags');
     }
     public function rel_to_inventory(){
+        return $this->belongsTo(Inventory::class, 'product_id');
+    }
+    public function rel_to_inventory1(){
         return $this->hasMany(Inventory::class, 'product_id');
     }
 }

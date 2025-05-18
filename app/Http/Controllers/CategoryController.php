@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -32,11 +33,25 @@ class CategoryController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        Log::insert([
+            'user_id' => Auth::user()->id,
+            'model' => 'Category',
+            'action' => 'insert',
+            'data' => $request->category_name,
+            'created_at' => Carbon::now(),
+        ]);
         return back()->with('category_add', 'Category added successfully');
     }
     public function category_soft_delete($category_id)
     {
         Category::find($category_id)->delete();
+        Log::insert([
+            'user_id' => Auth::user()->id,
+            'model' => 'Category',
+            'action' => 'soft delete',
+            'data' => Category::find($category_id)->category_name,
+            'created_at' => Carbon::now(),
+        ]);
         return back()->with('category_soft_delete', 'Category deleted successfully');
     }
     public function category_trash()
@@ -53,6 +68,13 @@ class CategoryController extends Controller
         }
 
         $category->restore();
+        Log::insert([
+            'user_id' => Auth::user()->id,
+            'model' => 'Category',
+            'action' => 'Category restore',
+            'data' => $category->category_name,
+            'created_at' => Carbon::now(),
+        ]);
         return back()->with('category_restore', 'Category restored successfully');
     }
     public function parmarent_delete($category_id)
@@ -63,6 +85,13 @@ class CategoryController extends Controller
         Category::onlyTrashed()->find($category_id)->forceDelete();
         Subcategory::where('category_id', $category_id)->update([
             'category_id' => 1,
+        ]);
+        Log::insert([
+            'user_id' => Auth::user()->id,
+            'model' => 'Category',
+            'action' => 'Category parmarent delete',
+            'data' => $cat->category_name,
+            'created_at' => Carbon::now(),
         ]);
         return back()->with('category_permanent_delete', 'Category permanently deleted successfully');
     }
@@ -83,6 +112,13 @@ class CategoryController extends Controller
             Category::find($category_id)->update([
                 'category_name' => $request->category_name,
             ]);
+            Log::insert([
+                'user_id' => Auth::user()->id,
+                'model' => 'Category',
+                'action' => 'Category Update',
+                'data' => Category::find($category_id)->category_name,
+                'created_at' => Carbon::now(),
+            ]);
             return back()->with('category_update', 'Category update successfully');
         } else {
             $cat = Category::find($category_id);
@@ -94,6 +130,13 @@ class CategoryController extends Controller
             Category::find($category_id)->update([
                 'category_name' => $request->category_name,
                 'icon' => $file_name,
+            ]);
+            Log::insert([
+                'user_id' => Auth::user()->id,
+                'model' => 'Category',
+                'action' => 'Category Update',
+                'data' => $cat->category_name,
+                'created_at' => Carbon::now(),
             ]);
             return back()->with('category_update', 'Category update successfully');
         }

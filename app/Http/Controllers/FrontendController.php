@@ -114,7 +114,11 @@ class FrontendController extends Controller
         } else {
             $str = ' <li><span id="quan" class="btn btn-success text-white">' . $quantity . ' In Stock</span></li>';
         }
-        echo $str;
+        // echo $str;
+        return response()->json([
+            'quantity' => $quantity,
+            'str' => $str
+        ]);
     }
     public function shop(Request $request)
     {
@@ -127,13 +131,13 @@ class FrontendController extends Controller
             if ($data['sort'] == 1) {
                 $based = 'after_discount';
                 $type = 'ASC';
-            }elseif ($data['sort'] == 2) {
+            } elseif ($data['sort'] == 2) {
                 $based = 'after_discount';
                 $type = 'DESC';
-            }elseif ($data['sort'] == 3) {
+            } elseif ($data['sort'] == 3) {
                 $based = 'product_name';
                 $type = 'ASC';
-            }elseif ($data['sort'] == 4) {
+            } elseif ($data['sort'] == 4) {
                 $based = 'product_name';
                 $type = 'DESC';
             }
@@ -166,6 +170,21 @@ class FrontendController extends Controller
                     $q->where('category_id', $data['category_id']);
                 });
             }
+            if (!empty($data['index_category']) && $data['index_category'] != '' && $data['index_category'] != 'undefined') {
+                $q->where(function ($q) use ($data) {
+                    $q->where('category_id', $data['index_category']);
+                });
+            }
+            if (!empty($data['index_offer50']) && $data['index_offer50'] != '' && $data['index_offer50'] != 'undefined') {
+                $q->where(function ($q) use ($data) {
+                    $q->where('discount', '>=',$data['index_offer50']);
+                });
+            }
+            if(!empty($data['sub_category_id']) && $data['sub_category_id'] != '' && $data['sub_category_id'] != 'undefined'){
+                $q->where(function ($q) use ($data) {
+                    $q->where('subcategory_id', $data['sub_category_id']);
+                });
+            }
             if (!empty($data['tag']) && $data['tag'] != '' && $data['tag'] != 'undefined') {
                 $q->where(function ($q) use ($data) {
                     $all = '';
@@ -179,8 +198,9 @@ class FrontendController extends Controller
                     $q->find($explode2);
                 });
             }
+
             if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined') {
-                $q->whereHas('rel_to_inventory', function ($q) use ($data) {
+                $q->whereHas('rel_to_inventory1', function ($q) use ($data) {
                     if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined') {
                         $q->whereHas('rel_to_color', function ($q) use ($data) {
                             $q->where('color_id', $data['color_id']);
@@ -216,7 +236,7 @@ class FrontendController extends Controller
     public function faq()
     {
         $faqs = Faq::all();
-        return view('frontend.faq',[
+        return view('frontend.faq', [
             'faqs' => $faqs,
         ]);
     }
@@ -227,16 +247,16 @@ class FrontendController extends Controller
     public function recent_view()
     {
         $recent_info = json_decode(Cookie::get('recent_view'), true);
-        
+
         if ($recent_info == NULL) {
             $recent_viewed_product = [];
             // $recent_viewed = array_unique($recent_info);
             $recent_viewed = [];
-        }else{
+        } else {
             $recent_viewed = array_reverse(array_unique($recent_info));
         }
         $recents = Product::find($recent_viewed);
-        return view('frontend.recent_view',[
+        return view('frontend.recent_view', [
             'recents' => $recents,
         ]);
     }

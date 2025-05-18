@@ -161,6 +161,7 @@
                         </a>
                     </li>
                     <li class="nav-item nav-category">Frontend Section</li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('banner')}}">
                             <i class="link-icon" data-feather="book"></i>
@@ -190,6 +191,13 @@
                         <a href="{{route('faq.index')}}" class="nav-link">
                             <i class="link-icon" data-feather="hash"></i>
                             <span class="link-title">FAQ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-category">Docs</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('log.index')}}">
+                            <i class="link-icon" data-feather="users"></i>
+                            <span class="link-title cursor-pointer">Log Info</span>
                         </a>
                     </li>
                 </ul>

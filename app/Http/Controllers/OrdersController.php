@@ -7,6 +7,7 @@ use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderCancel;
 use App\Models\OrderProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,10 @@ class OrdersController extends Controller
             $orders_id = Order::find($id)->order_id;
             foreach (OrderProduct::where('order_id', $orders_id)->get() as $order_product) {
                 Inventory::where('product_id', $order_product->product_id)->where('color_id', $order_product->color_id)->where('size_id', $order_product->size_id)->increment('quentity', $order_product->quantity);
+
+                // Product sold_count decrement
+                Product::where('id', $order_product->product_id)
+                    ->decrement('sold_count', $order_product->quantity);
             }
         } else {
             Order::find($id)->update([
@@ -102,7 +107,12 @@ class OrdersController extends Controller
         $order_id = Order::find($details->order_id);
         foreach (OrderProduct::where('order_id', $order_id->order_id)->get() as $order_product) {
             Inventory::where('product_id', $order_product->product_id)->where('color_id', $order_product->color_id)->where('size_id', $order_product->size_id)->increment('quentity', $order_product->quantity);
+
+            // Product sold_count decrement
+            Product::where('id', $order_product->product_id)
+                ->decrement('sold_count', $order_product->quantity);
         }
+
         $details->delete();
         return redirect()->route('order.cancel.lists')->with('success', 'Order Cancel Request Accepted!');
     }

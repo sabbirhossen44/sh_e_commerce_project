@@ -54,7 +54,9 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
-
+@php
+$web_info = App\Models\webInformation::where('status', 1)->first();
+@endphp
     <!-- start page-wrapper -->
     <div class="page-wrapper">
         <!-- start preloader -->
@@ -78,13 +80,13 @@ s0.parentNode.insertBefore(s1,s0);
                     <div class="row">
                         <div class="col col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="contact-intro">
-                                <span>A Marketplace Initiative by Themart Theme - save more with coupons</span>
+                                <span>{{$web_info->top_title}}</span>
                             </div>
                         </div>
                         <div class="col col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="contact-info">
                                 <ul>
-                                    <li><a href="tel:869968236"><span>Need help? Call Us:</span>+ +869 968 236</a></li>
+                                    <li><a href="tel:{{$web_info->web_number_link}}"><span>Need help? Call Us:</span>+88{{$web_info->web_number}}</a></li>
                                     <li>
                                         <div class="dropdown">
                                             <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -298,7 +300,8 @@ s0.parentNode.insertBefore(s1,s0);
                                                     <a class="menu-down-{{App\Models\Subcategory::where('category_id', $category->id)->count() != 0 ? 'arrow': ''}}" href="#">{{$category->category_name}}</a>
                                                     <ul class="header-catagory-single">
                                                         @foreach (App\Models\Subcategory::where('category_id', $category->id)->get() as $subscribe)
-                                                        <li><a href="#">{{$subscribe->sub_category}}</a></li>
+                                                        <li><button class="btn master_subCategory" value="{{$subscribe->id}}">{{$subscribe->sub_category}}</button></li>
+                                                        {{-- <li><button class="btn px-2">{{$subscribe->sub_category}}</button></li> --}}
                                                         @endforeach
                                                         
                                                     </ul>
@@ -353,29 +356,36 @@ s0.parentNode.insertBefore(s1,s0);
                         <div class="col col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="widget about-widget">
                                 <div class="logo widget-title">
-                                    <img src="{{asset('frontend')}}/images/logo-2.svg" alt="blog">
+                                    {{-- <img src="{{asset('frontend')}}/images/logo-2.svg" alt="blog"> --}}
+                                     @php
+                                $logo = App\Models\Logo::where('status', 1)->first();
+                                @endphp
+                                @if ($logo)
+                                <a class="navbar-brand" href="{{route('welcome')}}"><img src="{{asset('uploads/logo/'. $logo->logo)}}"
+                                    alt="logo"></a>
+                                @else
+                                <a class="navbar-brand" href="{{route('welcome')}}"><img src="{{asset('frontend')}}/images/logo-2.svg" alt="blog"></a>
+                                @endif
                                 </div>
-                                <p>Elit commodo nec urna erat morbi at hac turpis aliquam.
-                                    In tristique elit nibh turpis. Lacus volutpat ipsum convallis tellus pellentesque
-                                    etiam.</p>
+                                <p>{{$web_info->footer_title}}</p>
                                 <ul>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{$web_info->facebook}}" target="_blank">
                                             <i class="ti-facebook"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{$web_info->twitter}}" target="_blank">
                                             <i class="ti-twitter-alt"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{$web_info->linkedin}}" target="_blank">
                                             <i class="ti-linkedin"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{$web_info->instagram}}" target="_blank">
                                             <i class="ti-instagram"></i>
                                         </a>
                                     </li>
@@ -390,10 +400,9 @@ s0.parentNode.insertBefore(s1,s0);
                                 </div>
                                 <div class="contact-ft">
                                     <ul>
-                                        <li><i class="fi flaticon-mail"></i>themart@gmail.com</li>
-                                        <li><i class="fi flaticon-phone"></i>(208) 555-0112 <br>(704) 555-0127</li>
-                                        <li><i class="fi flaticon-pin"></i>4517 Washington Ave. Manchter,
-                                            Kentucky 495</li>
+                                        <li><i class="fi flaticon-mail"></i>{{$web_info->email1}} <br> {{$web_info->email2}}</li>
+                                        <li><i class="fi flaticon-phone"></i>{{$web_info->phone_number1}} <br>{{$web_info->phone_number2}}</li>
+                                        <li><i class="fi flaticon-pin"></i>{{$web_info->address}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -418,17 +427,17 @@ s0.parentNode.insertBefore(s1,s0);
                                     <h3>Instagram</h3>
                                 </div>
                                 <ul class="d-flex">
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/1.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/1.jpg"
                                                 alt=""></a></li>
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/2.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/2.jpg"
                                                 alt=""></a></li>
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/4.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/4.jpg"
                                                 alt=""></a></li>
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/3.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/3.jpg"
                                                 alt=""></a></li>
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/4.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/4.jpg"
                                                 alt=""></a></li>
-                                    <li><a href="project-single.html"><img src="{{asset('frontend')}}/images/instragram/1.jpg"
+                                    <li><a ><img src="{{asset('frontend')}}/images/instragram/1.jpg"
                                                 alt=""></a></li>
                                 </ul>
                             </div>
@@ -440,9 +449,8 @@ s0.parentNode.insertBefore(s1,s0);
                 <div class="container">
                     <div class="row">
                         <div class="col col-xs-12">
-                            <p class="copyright"> Copyright &copy; 2023 Themart by <a href="index.html">wpOceans</a>.
-                                All
-                                Rights Reserved.</p>
+                            <p class="copyright">  &copy; 2025 SH-shop. All rights reserved.</a>.
+                               </p>
                         </div>
                     </div>
                 </div>
@@ -505,61 +513,72 @@ s0.parentNode.insertBefore(s1,s0);
             window.location.href = link;
         })
 
-        $('.category').click(function () {
-            var search_input = $('#search_input').val();
-            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
-            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
-            var min = $('#min').val();
-            var max = $('#max').val();
-            var sort = $('.sort').val();
-            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
-            window.location.href = link;
-        })
+        // $('.category').click(function () {
 
-        $('.color').click(function () {
-            var search_input = $('#search_input').val();
-            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
-            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
-            var min = $('#min').val();
-            var max = $('#max').val();
-            var sort = $('.sort').val();
-            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
-            window.location.href = link;
-        })
+        //     var search_input = $('#search_input').val();
+        //     var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+        //     var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+        //     var min = $('#min').val();
+        //     var max = $('#max').val();
+        //     var sort = $('.sort').val();
+        //     var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+        //     window.location.href = link;
+        // })
 
-        $('.sort').change(function () {
-            var search_input = $('#search_input').val();
-            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
-            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
-            var min = $('#min').val();
-            var max = $('#max').val();
-            var sort = $('.sort').val();
-            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
-            window.location.href = link;
-        })
+        // $('.color').click(function () {
+        //     var search_input = $('#search_input').val();
+        //     var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+        //     var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+        //     var min = $('#min').val();
+        //     var max = $('#max').val();
+        //     var sort = $('.sort').val();
+        //     var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+        //     window.location.href = link;
+        // })
 
-        $('.price_filter').click(function () {
-            var search_input = $('#search_input').val();
-            var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
-            var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
-            var min = $('#min').val();
-            var max = $('#max').val();
-            var sort = $('.sort').val();
-            var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
-            window.location.href = link;
-        })
+        // $('.sort').change(function () {
+        //     var search_input = $('#search_input').val();
+        //     var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+        //     var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+        //     var min = $('#min').val();
+        //     var max = $('#max').val();
+        //     var sort = $('.sort').val();
+        //     var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+        //     window.location.href = link;
+        // })
 
-        $('.search_btn2').click(function (e) {
-            e.preventDefault();
-            var search_input2 = $('#search_input2').val();
-            var link = "{{route('shop')}}" + "?search_input=" + search_input2;
-            window.location.href = link;
-        })
+        // $('.price_filter').click(function () {
+        //     var search_input = $('#search_input').val();
+        //     var category_id = $("input[type = 'radio'][name= 'category_id']:checked").val();
+        //     var color_id = $("input[type = 'radio'][name= 'color_id']:checked").val();
+        //     var min = $('#min').val();
+        //     var max = $('#max').val();
+        //     var sort = $('.sort').val();
+        //     var link = "{{route('shop')}}" + "?search_input=" + search_input + "&category_id=" + category_id + '&min=' + min + '&max=' + max + '&color_id=' + color_id + '&sort=' + sort;
+        //     window.location.href = link;
+        // })
 
-        $('.tag').click(function (e) {
-            e.preventDefault();
-            var tag = $(this).val();
-            var link = "{{route('shop')}}" + "?tag=" + tag;
+        // $('.search_btn2').click(function (e) {
+        //     e.preventDefault();
+        //     var search_input2 = $('#search_input2').val();
+        //     var link = "{{route('shop')}}" + "?search_input=" + search_input2;
+        //     window.location.href = link;
+        // })
+
+        // $('.tag').click(function (e) {
+        //     e.preventDefault();
+        //     var tag = $(this).val();
+        //     var link = "{{route('shop')}}" + "?tag=" + tag;
+        //     window.location.href = link;
+        // })
+    </script>
+    <script>
+        $('.master_subCategory').click(function(){
+            // e.preventDefault();
+            var sub_category_id = $(this).val();
+            // alert(sub_category_id);
+            var link = "{{route('shop')}}" + "?sub_category_id=" + sub_category_id;
+            // alert(link);
             window.location.href = link;
         })
     </script>
